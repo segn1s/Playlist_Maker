@@ -4,15 +4,15 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="#1A1B22">
+    android:background="@color/white">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:padding="20dp"
+        android:padding="@dimen/default_padding"
         android:text="@string/settings"
-        android:textColor="#ffffff"
+        android:textColor="@color/black"
         android:textSize="20sp" />
 
     <FrameLayout
@@ -24,10 +24,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:padding="20dp"
+            android:padding="@dimen/default_padding"
             android:text="@string/dark_theme"
-            android:textColor="#ffffff"
-            android:textSize="18sp" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/default_text_size" />
 
         <Switch
             android:id="@+id/switch1"
@@ -48,16 +48,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:text="@string/share_app"
-            android:textColor="#ffffff"
-            android:padding="20dp"
-            android:textSize="18sp" />
+            android:textColor="@color/black"
+            android:padding="@dimen/default_padding"
+            android:textSize="@dimen/default_text_size" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/sharing_icon"
             android:layout_gravity="end"
-            app:iconTint="@color/white">
+            app:iconTint="@color/black">
         </ImageView>
 
     </FrameLayout>
@@ -72,16 +72,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:text="@string/text_to_support"
-            android:textColor="#ffffff"
-            android:padding="20dp"
-            android:textSize="18sp" />
+            android:textColor="@color/black"
+            android:padding="@dimen/default_padding"
+            android:textSize="@dimen/default_text_size" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/support_icon"
             android:layout_gravity="end"
-            app:iconTint="@color/white">
+            app:iconTint="@color/black">
         </ImageView>
 
     </FrameLayout>
@@ -96,16 +96,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:text="@string/user_agreement"
-            android:textColor="#ffffff"
-            android:padding="20dp"
-            android:textSize="18sp" />
+            android:textColor="@color/black"
+            android:padding="@dimen/default_padding"
+            android:textSize="@dimen/default_text_size" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/arrow_forward_icon"
             android:layout_gravity="end"
-            app:iconTint="@color/white">
+            app:iconTint="@color/black">
         </ImageView>
 
     </FrameLayout>
