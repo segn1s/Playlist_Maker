@@ -6,27 +6,43 @@
     android:orientation="vertical"
     android:background="?android:colorBackground">
 
-    <FrameLayout
+    <!-- Верхний бар -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="@dimen/default_icon_size"
+            android:layout_height="@dimen/default_icon_size"
+            android:src="@drawable/arrow_left"
+            android:background="@android:color/transparent"
+            app:tint="@color/onBackground" />
 
         <TextView
             style="@style/SettingsTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"
             android:text="@string/settings"
             android:textSize="20sp" />
-
-        <ImageView
-            style="@style/SettingsIconView"
-            android:icon="@drawable/arrow_left"
-            android:layout_gravity="start"/>
-
-    </FrameLayout>
+    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
 
         <TextView
             style="@style/SettingsTextView"
@@ -35,10 +51,10 @@
 
         <Switch
             android:id="@+id/switch1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:padding="25dp"/>
+            android:layout_width="45dp"
+            android:layout_height="@dimen/default_icon_size"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginRight="5dp"/>
 
     </FrameLayout>
 
@@ -46,7 +62,11 @@
         android:id="@+id/shareAppContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
 
         <TextView
             style="@style/SettingsTextView"
@@ -55,9 +75,11 @@
 
         <ImageView
             style="@style/SettingsIconView"
-            android:icon="@drawable/sharing_icon"
-            android:layout_gravity="end">
-        </ImageView>
+            android:layout_width="@dimen/default_icon_size"
+            android:layout_height="@dimen/default_icon_size"
+            android:layout_gravity="end"
+            android:src="@drawable/sharing_icon"
+            app:tint="@color/onBackground" />
 
     </FrameLayout>
 
@@ -65,7 +87,11 @@
         android:id="@+id/supportContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
 
         <TextView
             style="@style/SettingsTextView"
@@ -74,9 +100,12 @@
 
         <ImageView
             style="@style/SettingsIconView"
-            android:icon="@drawable/support_icon"
-            android:layout_gravity="end">
-        </ImageView>
+            android:layout_width="@dimen/default_icon_size"
+            android:layout_height="@dimen/default_icon_size"
+            android:src="@drawable/support_icon"
+            android:layout_gravity="end"
+            app:tint="@color/onBackground"
+            android:padding="4dp"/>
 
     </FrameLayout>
 
@@ -84,7 +113,11 @@
         android:id="@+id/userAgreementContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
 
         <TextView
             style="@style/SettingsTextView"
@@ -93,9 +126,12 @@
 
         <ImageView
             style="@style/SettingsIconView"
-            android:icon="@drawable/arrow_forward_icon"
-            android:layout_gravity="end">
-        </ImageView>
+            android:layout_width="@dimen/default_icon_size"
+            android:layout_height="@dimen/default_icon_size"
+            android:src="@drawable/arrow_forward_icon"
+            android:layout_gravity="end"
+            app:tint="@color/onBackground"
+            android:padding="4dp"/>
 
     </FrameLayout>
 

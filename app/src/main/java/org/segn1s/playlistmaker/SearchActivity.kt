@@ -11,6 +11,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 
 class SearchActivity : AppCompatActivity() {
@@ -21,12 +22,15 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_search)
 
         val searchEditText = findViewById<EditText>(R.id.searchEditText)
         val clearButton = findViewById<TextView>(R.id.clearButton)
-        val backButton = findViewById<ImageButton>(R.id.backButton)
+        val backButton = findViewById<ImageView>(R.id.backButton)
+
+        findViewById<ImageView>(R.id.backButton).setOnClickListener {
+            finish()
+        }
 
         // TextWatcher с заглушкой
         searchEditText.addTextChangedListener(object : TextWatcher {

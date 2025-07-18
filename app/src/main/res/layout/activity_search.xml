@@ -18,23 +18,22 @@
         android:paddingTop="16dp"
         android:paddingBottom="16dp">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/backButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@android:color/transparent"
-            android:contentDescription="@string/search"
+            android:layout_width="@dimen/default_icon_size"
+            android:layout_height="@dimen/default_icon_size"
             android:src="@drawable/arrow_left"
-            app:tint="@color/onBackground" />
+            app:tint="@color/onBackground"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/search"/>
 
         <TextView
+            style="@style/SettingsTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/search"
-            android:textColor="@color/onBackground"
-            android:textSize="20sp"
-            android:fontFamily="@font/ys_text"
-            android:layout_marginStart="8dp" />
+            android:textColor="@color/onBackground" />
+
     </LinearLayout>
 
     <!-- Поле поиска с крестиком -->

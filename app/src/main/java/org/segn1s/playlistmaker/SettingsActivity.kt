@@ -9,12 +9,17 @@ import android.content.Intent
 import android.net.Uri
 import android.widget.FrameLayout
 import android.widget.Toast
+import android.widget.ImageView
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_settings)
+
+        // Кнопка назад
+        findViewById<ImageView>(R.id.backButton).setOnClickListener {
+            finish()
+        }
 
         // Поделиться приложением
         findViewById<FrameLayout>(R.id.shareAppContainer).setOnClickListener {
@@ -36,10 +41,9 @@ class SettingsActivity : AppCompatActivity() {
                 putExtra(Intent.EXTRA_SUBJECT, subject)
                 putExtra(Intent.EXTRA_TEXT, body)
             }
-            // Проверка, что есть почтовый клиент
-            if (intent.resolveActivity(packageManager) != null) {
+            try {
                 startActivity(intent)
-            } else {
+            } catch (e: Exception) {
                 Toast.makeText(this, "Нет почтового клиента", Toast.LENGTH_SHORT).show()
             }
         }
