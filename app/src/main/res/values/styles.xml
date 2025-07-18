@@ -1,0 +1,47 @@
+<resources>
+    <!-- Стиль для основных TextView в настройках и главном экране -->
+    <style name="SettingsTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:padding">@dimen/default_padding</item>
+        <item name="android:textSize">@dimen/default_text_size</item>
+        <item name="android:fontFamily">@font/ys_text</item>
+    </style>
+
+    <!-- Стиль для иконок ImageView в настройках -->
+    <style name="SettingsIconView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="app:iconTint">@color/black</item>
+    </style>
+
+    <!-- Стиль для кнопок главного меню -->
+    <style name="MainMenuButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_marginStart">@dimen/default_margin</item>
+        <item name="android:layout_marginEnd">@dimen/default_margin</item>
+        <item name="android:layout_weight">1</item>
+        <item name="app:iconGravity">textStart</item>
+        <item name="app:iconTint">@color/black</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="app:cornerRadius">20dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/default_text_size</item>
+        <item name="android:fontFamily">@font/ys_text</item>
+    </style>
+
+    <style name="SearchField">
+        <item name="android:background">@color/search_field_bg</item>
+        <item name="android:textColor">@color/search_field_text</item>
+        <item name="android:textColorHint">@color/search_field_hint</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">40dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:fontFamily">@font/ys_text</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:backgroundTint">@color/search_field_bg</item>
+    </style>
+</resources> 

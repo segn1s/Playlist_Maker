@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="?android:colorBackground">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -12,19 +12,14 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/default_padding"
+            style="@style/SettingsTextView"
             android:text="@string/settings"
-            android:textColor="@color/black"
             android:textSize="20sp" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/SettingsIconView"
             android:icon="@drawable/arrow_left"
-            android:layout_gravity="start"
-            app:iconTint="@color/black">
+            android:layout_gravity="start"/>
 
     </FrameLayout>
 
@@ -34,13 +29,9 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/SettingsTextView"
             android:layout_gravity="start"
-            android:padding="@dimen/default_padding"
-            android:text="@string/dark_theme"
-            android:textColor="@color/black"
-            android:textSize="@dimen/default_text_size" />
+            android:text="@string/dark_theme" />
 
         <Switch
             android:id="@+id/switch1"
@@ -52,73 +43,58 @@
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/shareAppContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/SettingsTextView"
             android:layout_gravity="start"
-            android:text="@string/share_app"
-            android:textColor="@color/black"
-            android:padding="@dimen/default_padding"
-            android:textSize="@dimen/default_text_size" />
+            android:text="@string/share_app" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/SettingsIconView"
             android:icon="@drawable/sharing_icon"
-            android:layout_gravity="end"
-            app:iconTint="@color/black">
+            android:layout_gravity="end">
         </ImageView>
 
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/supportContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/SettingsTextView"
             android:layout_gravity="start"
-            android:text="@string/text_to_support"
-            android:textColor="@color/black"
-            android:padding="@dimen/default_padding"
-            android:textSize="@dimen/default_text_size" />
+            android:text="@string/text_to_support" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/SettingsIconView"
             android:icon="@drawable/support_icon"
-            android:layout_gravity="end"
-            app:iconTint="@color/black">
+            android:layout_gravity="end">
         </ImageView>
 
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/userAgreementContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/SettingsTextView"
             android:layout_gravity="start"
-            android:text="@string/user_agreement"
-            android:textColor="@color/black"
-            android:padding="@dimen/default_padding"
-            android:textSize="@dimen/default_text_size" />
+            android:text="@string/user_agreement" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/SettingsIconView"
             android:icon="@drawable/arrow_forward_icon"
-            android:layout_gravity="end"
-            app:iconTint="@color/black">
+            android:layout_gravity="end">
         </ImageView>
 
     </FrameLayout>

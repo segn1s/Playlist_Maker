@@ -2,4 +2,12 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="background">#FFFFFFFF</color>
+    <color name="surface">#FFF5F5F5</color>
+    <color name="onBackground">#FF000000</color>
+    <color name="onSurface">#FF000000</color>
+    <color name="search_field_bg">#F5F5F5</color>
+    <color name="search_field_text">#000000</color>
+    <color name="search_field_hint">#A0A0A0</color>
+    <color name="search_field_icon">#A0A0A0</color>
 </resources>
