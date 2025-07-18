@@ -18,22 +18,31 @@
         android:layout_marginTop="33dp"
         android:orientation="vertical">
 
-        <Button
-            style="@style/MainMenuButton"
+        <com.google.android.material.button.MaterialButton
+            style="@style/MainMenuButtonElevated"
             android:id="@+id/searchButton"
             app:icon="@drawable/search_icon"
+            app:iconGravity="textStart"
+            app:iconTint="@color/onBackground"
+            app:cornerRadius="20dp"
             android:text="@string/search"/>
 
-        <Button
-            style="@style/MainMenuButton"
+        <com.google.android.material.button.MaterialButton
+            style="@style/MainMenuButtonElevated"
             android:id="@+id/mediaButton"
             app:icon="@drawable/media_icon"
+            app:iconGravity="textStart"
+            app:iconTint="@color/onBackground"
+            app:cornerRadius="20dp"
             android:text="@string/media"/>
 
-        <Button
-            style="@style/MainMenuButton"
+        <com.google.android.material.button.MaterialButton
+            style="@style/MainMenuButtonElevated"
             android:id="@+id/settingsButton"
             app:icon="@drawable/settings_icon"
+            app:iconGravity="textStart"
+            app:iconTint="@color/onBackground"
+            app:cornerRadius="20dp"
             android:text="@string/settings"/>
     </LinearLayout>
 
