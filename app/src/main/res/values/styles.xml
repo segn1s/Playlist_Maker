@@ -3,7 +3,7 @@
     <style name="SettingsTextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/onBackground</item>
         <item name="android:padding">@dimen/default_padding</item>
         <item name="android:textSize">@dimen/default_text_size</item>
         <item name="android:fontFamily">@font/ys_display</item>
@@ -13,7 +13,7 @@
     <style name="SettingsIconView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginTop">15dp</item>
         <item name="android:layout_marginRight">10dp</item>
     </style>
 
@@ -31,14 +31,14 @@
     </style>
 
     <style name="MainMenuButtonElevated" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">60dp</item>
         <item name="android:layout_marginStart">@dimen/default_margin</item>
         <item name="android:layout_marginEnd">@dimen/default_margin</item>
         <item name="android:layout_weight">1</item>
         <item name="android:backgroundTint">@color/white</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">@dimen/default_text_size</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:fontFamily">@font/ys_text</item>
         <item name="elevation">6dp</item>
     </style>
