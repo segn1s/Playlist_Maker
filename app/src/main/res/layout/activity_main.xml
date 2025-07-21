@@ -9,10 +9,10 @@
     <TextView
         style="@style/SettingsTextView"
         android:layout_gravity="start"
-        android:fontFamily="@font/ys_display_bold"
+        android:fontFamily="@font/ys_display_medium"
         android:text="@string/app_name"
-        android:textSize="25sp"
-        android:textColor="@color/onBackground"/>
+        android:textColor="@color/onBackground"
+        android:textSize="25sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
