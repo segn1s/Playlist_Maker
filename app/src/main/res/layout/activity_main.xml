@@ -23,41 +23,38 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/searchButton"
             style="@style/MainMenuButtonElevated"
-            android:fontFamily="@font/ys_text_medium"
+            android:backgroundTint="@color/background"
             android:text="@string/search"
+            android:textAllCaps="false"
+            android:textColor="@color/onBackground"
             app:cornerRadius="20dp"
             app:icon="@drawable/search_icon"
             app:iconGravity="textStart"
-            android:textAllCaps="false"
-            android:textColor="@color/onBackground"
-            app:iconTint="@color/onBackground"
-            android:backgroundTint="@color/background"/>
+            app:iconTint="@color/onBackground" />
 
         <com.google.android.material.button.MaterialButton
-            style="@style/MainMenuButtonElevated"
             android:id="@+id/mediaButton"
+            style="@style/MainMenuButtonElevated"
+            android:backgroundTint="@color/background"
+            android:text="@string/media"
+            android:textAllCaps="false"
+            android:textColor="@color/onBackground"
+            app:cornerRadius="20dp"
             app:icon="@drawable/media_icon"
             app:iconGravity="textStart"
-            app:iconTint="@color/onBackground"
-            app:cornerRadius="20dp"
-            android:fontFamily="@font/ys_text_medium"
-            android:textAllCaps="false"
-            android:textColor="@color/onBackground"
-            android:text="@string/media"
-            android:backgroundTint="@color/background"/>
+            app:iconTint="@color/onBackground" />
 
         <com.google.android.material.button.MaterialButton
-            style="@style/MainMenuButtonElevated"
             android:id="@+id/settingsButton"
-            app:icon="@drawable/settings_icon"
-            app:iconGravity="textStart"
-            app:iconTint="@color/onBackground"
-            app:cornerRadius="20dp"
-            android:fontFamily="@font/ys_text_medium"
+            style="@style/MainMenuButtonElevated"
+            android:backgroundTint="@color/background"
+            android:text="@string/settings"
             android:textAllCaps="false"
             android:textColor="@color/onBackground"
-            android:text="@string/settings"
-            android:backgroundTint="@color/background"/>
+            app:cornerRadius="20dp"
+            app:icon="@drawable/settings_icon"
+            app:iconGravity="textStart"
+            app:iconTint="@color/onBackground" />
     </LinearLayout>
 
 </LinearLayout>
