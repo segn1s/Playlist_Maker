@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="?android:colorBackground">
+    android:background="@color/background">
 
     <!-- Верхний бар -->
     <LinearLayout
@@ -13,24 +13,24 @@
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:paddingBottom="16dp"
-        android:paddingStart="16dp"
         android:paddingEnd="16dp">
 
         <ImageView
             android:id="@+id/backButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:src="@drawable/arrow_left"
-            android:background="@android:color/transparent"
             app:tint="@color/onBackground" />
 
         <TextView
-            style="@style/SettingsTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
+            android:paddingTop="10dp"
+            android:paddingStart="10dp"
             android:fontFamily="@font/ys_display_medium"
             android:text="@string/settings"
+            android:textColor="@color/onBackground"
             android:textSize="25sp" />
     </LinearLayout>
 
@@ -73,7 +73,8 @@
             android:layout_width="@dimen/default_icon_size"
             android:layout_height="@dimen/default_icon_size"
             android:layout_gravity="end"
-            android:src="@drawable/sharing_icon" />
+            android:src="@drawable/arrow_forward_icon"
+            app:tint="@color/icon_tint" />
 
     </FrameLayout>
 
@@ -95,6 +96,7 @@
             android:layout_width="@dimen/default_icon_size"
             android:layout_height="@dimen/default_icon_size"
             android:src="@drawable/support_icon"
+            app:tint="@color/icon_tint"
             android:layout_gravity="end"
             android:padding="4dp"/>
 
@@ -118,6 +120,7 @@
             android:layout_width="@dimen/default_icon_size"
             android:layout_height="@dimen/default_icon_size"
             android:src="@drawable/arrow_forward_icon"
+            app:tint="@color/icon_tint"
             android:layout_gravity="end"
             android:padding="4dp"/>
 
