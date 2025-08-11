@@ -13,4 +13,5 @@
     <color name ="icon_tint">#FFFFFF</color>
     <color name="ic_arrow_back_color">#FFFFFF</color>
     <color name="ic_search_color">#1A1B22</color>
+    <color name="clear_button">#1A1B22</color>
 </resources> 
