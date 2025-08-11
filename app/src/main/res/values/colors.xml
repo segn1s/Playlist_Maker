@@ -7,9 +7,12 @@
     <color name="surface">#FFF5F5F5</color>
     <color name="onBackground">#000000</color>
     <color name="onSurface">#FF000000</color>
-    <color name="search_field_bg">#F5F5F5</color>
+    <color name="search_field_bg">#E6E8EB</color>
     <color name="search_field_text">#000000</color>
     <color name="search_field_hint">#A0A0A0</color>
     <color name="search_field_icon">#A0A0A0</color>
     <color name ="icon_tint">#A0A0A0</color>
+    <color name="ic_arrow_back_color">#1A1B22</color>
+    <color name="ic_search_color">#AEAFB4</color>
+    <color name="clear_button">#AEAFB4</color>
 </resources>
