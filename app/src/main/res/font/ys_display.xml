@@ -1,0 +1,26 @@
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/ys_display_regular" />
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="500"
+        android:font="@font/ys_display_medium" />
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="700"
+        android:font="@font/ys_display_bold" />
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="300"
+        android:font="@font/ys_display_light" />
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="100"
+        android:font="@font/ys_display_thin" />
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="900"
+        android:font="@font/ys_display_heavy" />
+</font-family> 
