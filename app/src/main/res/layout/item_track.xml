@@ -43,7 +43,7 @@
         android:singleLine="true"
         android:text="The Beatles • 2:55"
         android:textColor="@color/ic_arrow_search"
-        android:textSize="14sp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toStartOf="@id/ivArrow"
         app:layout_constraintStart_toStartOf="@id/tvTrackName"
         app:layout_constraintTop_toBottomOf="@id/tvTrackName" />
