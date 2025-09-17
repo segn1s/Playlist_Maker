@@ -10,6 +10,7 @@
     <color name="search_field_text">#000000</color>
     <color name="search_field_hint">#000000</color>
     <color name="search_field_icon">#000000</color>
+    <color name ="ic_arrow_search">#FFFFFFFF</color>
     <color name ="icon_tint">#FFFFFF</color>
     <color name="ic_arrow_back_color">#FFFFFF</color>
     <color name="ic_search_color">#1A1B22</color>
