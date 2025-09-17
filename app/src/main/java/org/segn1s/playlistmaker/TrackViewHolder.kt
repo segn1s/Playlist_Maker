@@ -20,6 +20,7 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         Glide.with(itemView.context)
             .load(track.artworkUrl100)
             .transform(RoundedCorners(12))
+            .placeholder(R.drawable.placeholder)
             .into(ivArtwork)
     }
 }
