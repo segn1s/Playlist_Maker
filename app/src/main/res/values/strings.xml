@@ -16,4 +16,8 @@
     <string name="user_agreement_url" translatable="false">https://yandex.ru/legal/practicum_offer/</string>
     <string name="android_course_url" translatable="false">https://practicum.yandex.ru/profile/android-developer/</string>
     <string name="cancel_letter" translatable="false">X</string>
+    <string name="not_found">Ничего не нашлось</string>
+    <string name="network_error">Проблемы со связью</string>
+    <string name="explanation_network_error">Загрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="update">Обновить</string>
 </resources>
