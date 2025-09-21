@@ -45,6 +45,7 @@
         android:background="@drawable/bg_search"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:layout_marginTop="8dp"
         android:paddingHorizontal="12dp"
         android:paddingVertical="8dp"
         android:paddingStart="@dimen/padding_search"
@@ -88,5 +89,11 @@
         </FrameLayout>
 
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_marginTop="48dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>
