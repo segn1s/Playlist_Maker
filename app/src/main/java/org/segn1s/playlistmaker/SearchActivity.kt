@@ -99,6 +99,7 @@ class SearchActivity : AppCompatActivity() {
         clearButton.setOnClickListener {
             searchEditText.text.clear()
             clearButton.visibility = View.GONE
+            trackAdapter.updateData(emptyList())
             // Скрыть клавиатуру
             val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(searchEditText.windowToken, 0)
@@ -137,37 +138,32 @@ class SearchActivity : AppCompatActivity() {
 
     fun showPlaceholderNotFound(){
         recyclerView.visibility = View.GONE
-        imgError.visibility = View.VISIBLE
 
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES || AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_UNSPECIFIED || AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY){
-            imgError.visibility = View.VISIBLE
-            imgError.setImageResource(R.drawable.placeholder_not_found_dark)
-        } else {
-            imgError.visibility = View.VISIBLE
-            imgError.setImageResource(R.drawable.placeholder_not_found_light)
-        }
+        imgError.visibility = View.VISIBLE
+        imgError.setImageResource(R.drawable.placeholder_not_found)
+
         txtError.text = getString(R.string.not_found)
         txtError.visibility = View.VISIBLE
     }
 
     fun showPlaceholderNetworkError(){
         recyclerView.visibility = View.GONE
-        imgError.visibility = View.VISIBLE
 
-        if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES || AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_UNSPECIFIED || AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY){
-            imgError.visibility = View.VISIBLE
-            imgError.setImageResource(R.drawable.placeholder_network_error_dark)
-        } else {
-            imgError.visibility = View.VISIBLE
-            imgError.setImageResource(R.drawable.placeholder_network_error_light)
-        }
+        imgError.visibility = View.VISIBLE
+        imgError.setImageResource(R.drawable.placeholder_network_error)
 
         txtError.text = getString(R.string.network_error)
         txtError.visibility = View.VISIBLE
+
         txtExplanationError.text = getString(R.string.explanation_network_error)
         txtExplanationError.visibility = View.VISIBLE
+
         btnUpdate.visibility = View.VISIBLE
         btnUpdate.setOnClickListener {
+            imgError.visibility= View.GONE
+            txtError.visibility = View.GONE
+            txtExplanationError.visibility = View.GONE
+            btnUpdate.visibility = View.GONE
             performSearch(searchEditText.text.toString().trim())
         }
     }
