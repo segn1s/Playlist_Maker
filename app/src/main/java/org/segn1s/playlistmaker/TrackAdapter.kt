@@ -30,7 +30,7 @@ class TrackAdapter : RecyclerView.Adapter<TrackViewHolder>() {
 
     fun updateData(newTracks: List<Track>) {
         tracks.clear()
-        tracks.addAll(newTracks.take(maxItems))
+        tracks.addAll(newTracks)
         notifyDataSetChanged()
     }
 
