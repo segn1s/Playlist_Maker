@@ -6,4 +6,5 @@
     <dimen name="default_icon_size">30dp</dimen>
     <dimen name="padding_search">16dp</dimen>
     <dimen name="default_icon_width">48dp</dimen>
+    <dimen name="history_max_height">360dp</dimen>
 </resources>

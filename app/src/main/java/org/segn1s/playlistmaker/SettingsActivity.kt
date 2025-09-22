@@ -10,6 +10,7 @@ import android.net.Uri
 import android.widget.FrameLayout
 import android.widget.Toast
 import android.widget.ImageView
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,6 +20,15 @@ class SettingsActivity : AppCompatActivity() {
         // Кнопка назад
         findViewById<ImageView>(R.id.backButton).setOnClickListener {
             finish()
+        }
+
+        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
+
+        // Устанавливаем начальное значение из App (SharedPreferences)
+        themeSwitcher.isChecked = (applicationContext as App).darkTheme
+
+        themeSwitcher.setOnCheckedChangeListener { _, checked ->
+            (applicationContext as App).switchTheme(checked)
         }
 
         // Поделиться приложением
