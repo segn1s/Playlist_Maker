@@ -75,6 +75,11 @@ class SearchActivity : AppCompatActivity() {
             searchHistory.addTrack(track)
             Log.d("SearchHistory", "Track added: ${track.trackName}")
             updateHistoryView()
+            startActivity(
+                android.content.Intent(this, PlayerActivity::class.java).apply {
+                    putExtra("track_extra", track)
+                }
+            )
         }
 
         clearHistoryButton.setOnClickListener {
@@ -95,10 +100,15 @@ class SearchActivity : AppCompatActivity() {
         trackAdapter = TrackAdapter()
         recyclerView.adapter = trackAdapter
 
-        // Добавляем клики по результатам поиска в историю
+        // Клик по результату: добавляем в историю и открываем PlayerActivity
         trackAdapter.setOnItemClickListener { track ->
             searchHistory.addTrack(track)
             updateHistoryView()
+            startActivity(
+                android.content.Intent(this, PlayerActivity::class.java).apply {
+                    putExtra("track_extra", track)
+                }
+            )
         }
 
         // TextWatcher с корректным управлением видимостью
