@@ -16,4 +16,11 @@
     <string name="network_error">Connection problems</string>
     <string name="explanation_network_error">Loading failed. Check your internet connection.</string>
     <string name="update">Update</string>
+    <string name="search_history">You\'ve searched</string>
+    <string name="clear_history">Clear history</string>
+    <string name="duration">Duration</string>
+    <string name="album">Album</string>
+    <string name="genre">Genre</string>
+    <string name="year">Year</string>
+    <string name="country">Country</string>
 </resources>
