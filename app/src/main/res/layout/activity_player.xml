@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:background="@color/background"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,6 +36,7 @@
             android:maxWidth="312dp"
             android:maxHeight="312dp"
             android:scaleType="centerCrop"
+            android:background="@drawable/rounded_image_background"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@+id/right_guideline"
             app:layout_constraintStart_toStartOf="@+id/left_guideline"
@@ -98,10 +99,11 @@
         <!-- Кнопка Play/Pause (по центру, крупнее) -->
 
         <!-- Кнопка Like (справа) -->
+
         <ImageButton
             android:id="@+id/addToPlaylistButton"
-            android:layout_width="51dp"
-            android:layout_height="51dp"
+            android:layout_width="76.5dp"
+            android:layout_height="76.5dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
@@ -112,13 +114,13 @@
             app:layout_constraintEnd_toStartOf="@id/playPauseButton"
             app:layout_constraintStart_toStartOf="@id/left_guideline"
             app:layout_constraintTop_toTopOf="@id/playPauseButton"
-            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_bias="0.2"
             app:srcCompat="@drawable/ic_add_media" />
 
         <ImageButton
             android:id="@+id/playPauseButton"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
@@ -146,8 +148,8 @@
 
         <ImageButton
             android:id="@+id/likeButton"
-            android:layout_width="51dp"
-            android:layout_height="51dp"
+            android:layout_width="76.5dp"
+            android:layout_height="76.5dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
@@ -158,7 +160,7 @@
             app:layout_constraintEnd_toEndOf="@id/right_guideline"
             app:layout_constraintStart_toEndOf="@id/playPauseButton"
             app:layout_constraintTop_toTopOf="@id/playPauseButton"
-            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_bias="0.2"
             app:srcCompat="@drawable/ic_liked_border_media" />
 
         <!-- Информация о треке: лейблы слева, значения справа -->
