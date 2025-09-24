@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 class PlayerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,8 +51,10 @@ class PlayerActivity : AppCompatActivity() {
 
             val highResUrl = it.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
 
+            val cornerRadius = resources.getDimensionPixelSize(R.dimen.album_corner_radius)
             Glide.with(this)
                 .load(highResUrl)
+                .transform(CenterCrop(), RoundedCorners(cornerRadius))
                 .placeholder(R.drawable.placeholder)
                 .into(albumCover)
         }
