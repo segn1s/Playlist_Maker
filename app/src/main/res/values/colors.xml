@@ -16,4 +16,5 @@
     <color name="ic_arrow_back_color">#1A1B22</color>
     <color name="ic_search_color">#AEAFB4</color>
     <color name="clear_button">#AEAFB4</color>
+    <color name="progressBarColor">#3772e7</color>
 </resources>

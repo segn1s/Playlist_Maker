@@ -93,6 +93,16 @@
 
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp"
+        android:indeterminateTint="@color/progressBarColor"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
     <ImageView
         android:id="@+id/imageError"
         android:layout_width="match_parent"
