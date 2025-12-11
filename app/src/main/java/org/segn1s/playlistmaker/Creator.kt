@@ -5,7 +5,7 @@ import android.content.Context.MODE_PRIVATE
 import com.google.gson.Gson
 import org.segn1s.playlistmaker.data.ITunesApi
 import org.segn1s.playlistmaker.data.repository.AudioPlayerRepositoryImpl
-import org.segn1s.playlistmaker.data.repository.HistoryInteractorImpl
+import org.segn1s.playlistmaker.domain.impl.HistoryInteractorImpl
 import org.segn1s.playlistmaker.data.repository.SearchHistoryRepositoryImpl
 import org.segn1s.playlistmaker.data.repository.SettingsRepositoryImpl
 import org.segn1s.playlistmaker.data.repository.TrackRepositoryImpl

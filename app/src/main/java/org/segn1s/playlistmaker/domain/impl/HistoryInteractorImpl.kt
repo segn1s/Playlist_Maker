@@ -1,4 +1,4 @@
-package org.segn1s.playlistmaker.data.repository
+package org.segn1s.playlistmaker.domain.impl
 
 import org.segn1s.playlistmaker.domain.api.HistoryInteractor
 import org.segn1s.playlistmaker.domain.api.SearchHistoryRepository
