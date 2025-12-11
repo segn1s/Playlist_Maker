@@ -1,10 +1,11 @@
-package org.segn1s.playlistmaker
+package org.segn1s.playlistmaker.domain
 
 import android.content.SharedPreferences
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.segn1s.playlistmaker.domain.model.Track
 
 class SearchHistory(private val sharedPreferences: SharedPreferences) {
 

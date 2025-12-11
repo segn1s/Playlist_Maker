@@ -1,9 +1,11 @@
-package org.segn1s.playlistmaker
+package org.segn1s.playlistmaker.presentation
 
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import org.segn1s.playlistmaker.R
+import org.segn1s.playlistmaker.domain.model.Track
 
 class TrackAdapter : RecyclerView.Adapter<TrackViewHolder>() {
 
