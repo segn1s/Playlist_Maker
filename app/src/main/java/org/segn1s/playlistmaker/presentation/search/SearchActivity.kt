@@ -1,5 +1,6 @@
 package org.segn1s.playlistmaker.presentation.search
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,6 +13,7 @@ import org.segn1s.playlistmaker.databinding.ActivitySearchBinding
 import org.segn1s.playlistmaker.domain.model.Track
 import org.segn1s.playlistmaker.presentation.search.SearchViewModel
 import org.segn1s.playlistmaker.presentation.common.TrackAdapter
+import org.segn1s.playlistmaker.presentation.player.PlayerActivity
 
 class SearchActivity : AppCompatActivity() {
 
@@ -139,6 +141,10 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun startPlayerActivity(track: Track) {
-        // Твоя логика перехода
+        val intent = Intent(this, PlayerActivity::class.java).apply {
+            // Убедись, что ключ "track_extra" совпадает с тем, что в PlayerActivity
+            putExtra("track_extra", track)
+        }
+        startActivity(intent)
     }
 }

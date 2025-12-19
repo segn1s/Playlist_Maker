@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.segn1s.playlistmaker.domain.api.player.AudioPlayerInteractor
+import org.segn1s.playlistmaker.domain.api.player.AudioPlayerRepository
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -15,34 +16,28 @@ class PlayerViewModel(
 
     private val handler = Handler(Looper.getMainLooper())
 
-    // Состояние плеера (экрана)
-    private val _playerState = MutableLiveData<PlayerState>()
+    // Теперь это ЕДИНСТВЕННЫЙ источник истины для Activity
+    private val _playerState = MutableLiveData<PlayerState>(PlayerState.Default)
     val playerState: LiveData<PlayerState> = _playerState
-
-    // Текущий прогресс
-    private val _progress = MutableLiveData<String>()
-    val progress: LiveData<String> = _progress
 
     private val updateProgressRunnable = object : Runnable {
         override fun run() {
-            _progress.postValue(formatMilliseconds(playerInteractor.getCurrentPosition()))
+            // Каждые 300мс создаем НОВОЕ состояние Playing с обновленным временем
+            _playerState.postValue(PlayerState.Playing(formatMilliseconds(playerInteractor.getCurrentPosition())))
             handler.postDelayed(this, REFRESH_LISTENER_DELAY_MS)
         }
     }
 
     init {
-        // Подписываемся на события из Интерактора
         playerInteractor.setPlayerListener(
             onPrepared = {
-                _playerState.postValue(PlayerState.PREPARED)
-                _progress.postValue(DEFAULT_TIMER_VALUE)
+                _playerState.postValue(PlayerState.Prepared)
             },
             onCompletion = {
                 stopTimer()
-                _playerState.postValue(PlayerState.PREPARED)
-                _progress.postValue(DEFAULT_TIMER_VALUE)
+                _playerState.postValue(PlayerState.Prepared)
             },
-            onProgressUpdate = TODO()
+            onProgressUpdate = {}
         )
     }
 
@@ -60,14 +55,15 @@ class PlayerViewModel(
 
     private fun startPlayer() {
         playerInteractor.startPlayer()
-        _playerState.postValue(PlayerState.PLAYING)
         startTimer()
+        // Состояние обновится через Runnable почти мгновенно
     }
 
     fun pausePlayer() {
         playerInteractor.pausePlayer()
-        _playerState.postValue(PlayerState.PAUSED)
         stopTimer()
+        // При паузе фиксируем текущее время в состоянии Paused
+        _playerState.postValue(PlayerState.Paused(formatMilliseconds(playerInteractor.getCurrentPosition())))
     }
 
     override fun onCleared() {
@@ -87,9 +83,6 @@ class PlayerViewModel(
     private fun formatMilliseconds(millis: Long): String {
         return SimpleDateFormat("mm:ss", Locale.getDefault()).format(millis)
     }
-
-    // Состояния для UI
-    enum class PlayerState { DEFAULT, PREPARED, PLAYING, PAUSED }
 
     companion object {
         private const val REFRESH_LISTENER_DELAY_MS = 300L

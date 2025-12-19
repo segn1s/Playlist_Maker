@@ -43,8 +43,6 @@ class SearchViewModel(
 
     fun performSearch(query: String) {
 
-        handler.removeCallbacks(searchRunnable)
-
         if (query.isEmpty()) {
             showHistory()
             return

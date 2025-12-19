@@ -40,23 +40,24 @@ class PlayerActivity : AppCompatActivity() {
         // Следим за состоянием плеера (иконка кнопки)
         viewModel.playerState.observe(this) { state ->
             when (state) {
-                PlayerViewModel.PlayerState.PLAYING -> {
-                    binding.playPauseButton.setImageResource(R.drawable.ic_paused_media)
-                    binding.playPauseButton.isEnabled = true
-                }
-                PlayerViewModel.PlayerState.PAUSED, PlayerViewModel.PlayerState.PREPARED -> {
-                    binding.playPauseButton.setImageResource(R.drawable.ic_play_media)
-                    binding.playPauseButton.isEnabled = true
-                }
-                PlayerViewModel.PlayerState.DEFAULT -> {
+                is PlayerState.Default -> {
                     binding.playPauseButton.isEnabled = false
+                    binding.playbackProgress.text = "00:00"
+                }
+                is PlayerState.Prepared -> {
+                    binding.playPauseButton.isEnabled = true
+                    binding.playPauseButton.setImageResource(R.drawable.ic_play_media)
+                    binding.playbackProgress.text = "00:00"
+                }
+                is PlayerState.Playing -> {
+                    binding.playPauseButton.setImageResource(R.drawable.ic_paused_media)
+                    binding.playbackProgress.text = state.progress // Берем прогресс из стейта!
+                }
+                is PlayerState.Paused -> {
+                    binding.playPauseButton.setImageResource(R.drawable.ic_play_media)
+                    binding.playbackProgress.text = state.progress // Берем прогресс из стейта!
                 }
             }
-        }
-
-        // Следим за временем прогресса
-        viewModel.progress.observe(this) { time ->
-            binding.playbackProgress.text = time
         }
     }
 
