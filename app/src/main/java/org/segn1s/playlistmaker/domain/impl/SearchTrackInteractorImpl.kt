@@ -1,7 +1,7 @@
 package org.segn1s.playlistmaker.domain.impl
 
-import org.segn1s.playlistmaker.domain.api.SearchTrackInteractor
-import org.segn1s.playlistmaker.domain.api.TrackRepository
+import org.segn1s.playlistmaker.domain.api.search.SearchTrackInteractor
+import org.segn1s.playlistmaker.domain.api.search.TrackRepository
 import org.segn1s.playlistmaker.domain.model.Track
 
 class SearchTrackInteractorImpl(private val repository: TrackRepository) : SearchTrackInteractor {

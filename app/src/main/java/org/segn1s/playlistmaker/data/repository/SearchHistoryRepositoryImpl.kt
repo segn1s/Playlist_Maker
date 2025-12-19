@@ -3,7 +3,7 @@ package org.segn1s.playlistmaker.data.repository
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import org.segn1s.playlistmaker.domain.api.SearchHistoryRepository
+import org.segn1s.playlistmaker.domain.api.search.SearchHistoryRepository
 import org.segn1s.playlistmaker.domain.model.Track
 
 class SearchHistoryRepositoryImpl(

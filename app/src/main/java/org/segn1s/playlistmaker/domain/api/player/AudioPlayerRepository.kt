@@ -1,4 +1,4 @@
-package org.segn1s.playlistmaker.domain.api
+package org.segn1s.playlistmaker.domain.api.player
 
 interface AudioPlayerRepository {
 
@@ -16,6 +16,5 @@ interface AudioPlayerRepository {
     fun pause()
     fun release()
 
-    // Получить текущую позицию
     fun getCurrentPosition(): Long
 }

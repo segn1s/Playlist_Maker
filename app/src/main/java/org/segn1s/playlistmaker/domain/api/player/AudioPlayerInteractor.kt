@@ -1,4 +1,4 @@
-package org.segn1s.playlistmaker.domain.api
+package org.segn1s.playlistmaker.domain.api.player
 
 interface AudioPlayerInteractor {
 
@@ -20,4 +20,6 @@ interface AudioPlayerInteractor {
         onCompletion: () -> Unit,
         onProgressUpdate: (Long) -> Unit
     )
+
+    fun getCurrentPosition(): Long
 }

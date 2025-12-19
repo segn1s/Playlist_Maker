@@ -1,4 +1,4 @@
-package org.segn1s.playlistmaker.domain.api
+package org.segn1s.playlistmaker.domain.api.search
 
 import org.segn1s.playlistmaker.domain.model.Track
 

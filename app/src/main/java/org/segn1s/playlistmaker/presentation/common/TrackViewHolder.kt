@@ -1,4 +1,4 @@
-package org.segn1s.playlistmaker.presentation
+package org.segn1s.playlistmaker.presentation.common
 
 import android.view.View
 import android.widget.ImageView

@@ -1,7 +1,7 @@
 package org.segn1s.playlistmaker.data.repository
 
 import android.content.SharedPreferences
-import org.segn1s.playlistmaker.domain.api.SettingsRepository
+import org.segn1s.playlistmaker.domain.api.settings.SettingsRepository
 
 private const val DARK_THEME_KEY = "dark_theme_enabled"
 
