@@ -1,4 +1,4 @@
-package org.segn1s.playlistmaker
+package org.segn1s.playlistmaker.domain.model
 
 import java.io.Serializable
 import java.text.SimpleDateFormat

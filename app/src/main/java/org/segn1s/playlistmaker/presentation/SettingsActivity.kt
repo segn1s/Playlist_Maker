@@ -1,21 +1,28 @@
-package org.segn1s.playlistmaker
+package org.segn1s.playlistmaker.presentation
 
-import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.widget.FrameLayout
-import android.widget.Toast
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.switchmaterial.SwitchMaterial
+import org.segn1s.playlistmaker.R
+import org.segn1s.playlistmaker.Creator
+import org.segn1s.playlistmaker.domain.api.SettingsInteractor
 
 class SettingsActivity : AppCompatActivity() {
+
+    // 1. Объявляем Интерактор
+    private lateinit var settingsInteractor: SettingsInteractor
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+
+        // Инициализация Интерактора через Creator
+        settingsInteractor = Creator.provideSettingsInteractor(applicationContext)
 
         // Кнопка назад
         findViewById<ImageView>(R.id.backButton).setOnClickListener {
@@ -24,12 +31,16 @@ class SettingsActivity : AppCompatActivity() {
 
         val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
 
-        // Устанавливаем начальное значение из App (SharedPreferences)
-        themeSwitcher.isChecked = (applicationContext as App).darkTheme
+        // 2. Устанавливаем начальное значение, используя Интерактор (Domain Layer)
+        themeSwitcher.isChecked = settingsInteractor.getDarkThemeState()
 
         themeSwitcher.setOnCheckedChangeListener { _, checked ->
-            (applicationContext as App).switchTheme(checked)
+            // 3. Переключаем тему, используя Интерактор (Domain Layer)
+            // Интерактор сам сохранит состояние в SharedPreferences и вызовет App::applyTheme
+            settingsInteractor.switchTheme(checked)
         }
+
+        // --- Внешнее взаимодействие (без Интерактора) ---
 
         // Поделиться приложением
         findViewById<FrameLayout>(R.id.shareAppContainer).setOnClickListener {
@@ -51,11 +62,7 @@ class SettingsActivity : AppCompatActivity() {
                 putExtra(Intent.EXTRA_SUBJECT, subject)
                 putExtra(Intent.EXTRA_TEXT, body)
             }
-            try {
-                startActivity(intent)
-            } catch (e: Exception) {
-                Toast.makeText(this, "Нет почтового клиента", Toast.LENGTH_SHORT).show()
-            }
+            startActivity(intent)
         }
 
         // Пользовательское соглашение
