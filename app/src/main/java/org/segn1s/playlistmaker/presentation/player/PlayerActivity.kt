@@ -2,11 +2,10 @@ package org.segn1s.playlistmaker.presentation.player
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import org.segn1s.playlistmaker.Creator
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.segn1s.playlistmaker.R
 import org.segn1s.playlistmaker.databinding.ActivityPlayerBinding
 import org.segn1s.playlistmaker.domain.model.Track
@@ -14,7 +13,7 @@ import org.segn1s.playlistmaker.domain.model.Track
 class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
-    private lateinit var viewModel: PlayerViewModel
+    private val viewModel: PlayerViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,9 +24,6 @@ class PlayerActivity : AppCompatActivity() {
             finish()
             return
         }
-
-        viewModel = ViewModelProvider(this, Creator.getPlayerViewModelFactory())
-            .get(PlayerViewModel::class.java)
 
         bindTrackData(track)
         setupListeners()
