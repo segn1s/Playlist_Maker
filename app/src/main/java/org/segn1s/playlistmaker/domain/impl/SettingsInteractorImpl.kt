@@ -1,7 +1,7 @@
 package org.segn1s.playlistmaker.domain.impl
 
-import org.segn1s.playlistmaker.domain.api.SettingsInteractor
-import org.segn1s.playlistmaker.domain.api.SettingsRepository
+import org.segn1s.playlistmaker.domain.api.settings.SettingsInteractor
+import org.segn1s.playlistmaker.domain.api.settings.SettingsRepository
 
 // ❗ ВАЖНО: Добавляем функциональный тип (колбэк) для Application
 // Это нужно, чтобы интерактор мог вызвать изменение темы на уровне Application,

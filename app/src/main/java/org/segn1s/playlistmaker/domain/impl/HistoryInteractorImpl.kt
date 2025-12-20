@@ -1,7 +1,7 @@
 package org.segn1s.playlistmaker.domain.impl
 
-import org.segn1s.playlistmaker.domain.api.HistoryInteractor
-import org.segn1s.playlistmaker.domain.api.SearchHistoryRepository
+import org.segn1s.playlistmaker.domain.api.search.HistoryInteractor
+import org.segn1s.playlistmaker.domain.api.search.SearchHistoryRepository
 import org.segn1s.playlistmaker.domain.model.Track
 
 class HistoryInteractorImpl(

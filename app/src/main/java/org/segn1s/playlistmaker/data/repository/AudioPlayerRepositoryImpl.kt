@@ -1,7 +1,7 @@
 package org.segn1s.playlistmaker.data.repository
 
 import android.media.MediaPlayer
-import org.segn1s.playlistmaker.domain.api.AudioPlayerRepository
+import org.segn1s.playlistmaker.domain.api.player.AudioPlayerRepository
 
 class AudioPlayerRepositoryImpl : AudioPlayerRepository {
 

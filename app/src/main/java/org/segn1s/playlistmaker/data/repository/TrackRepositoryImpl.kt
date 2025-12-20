@@ -3,7 +3,7 @@ package org.segn1s.playlistmaker.data.repository
 import org.segn1s.playlistmaker.data.ITunesApi
 import org.segn1s.playlistmaker.data.dto.SearchResponse
 import org.segn1s.playlistmaker.data.dto.toDomainTrack
-import org.segn1s.playlistmaker.domain.api.TrackRepository
+import org.segn1s.playlistmaker.domain.api.search.TrackRepository
 import org.segn1s.playlistmaker.domain.model.Track
 import retrofit2.Call
 import retrofit2.Callback

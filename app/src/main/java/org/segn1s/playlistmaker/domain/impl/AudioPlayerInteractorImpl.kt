@@ -2,8 +2,8 @@ package org.segn1s.playlistmaker.domain.impl
 
 import android.os.Handler
 import android.os.Looper
-import org.segn1s.playlistmaker.domain.api.AudioPlayerInteractor
-import org.segn1s.playlistmaker.domain.api.AudioPlayerRepository
+import org.segn1s.playlistmaker.domain.api.player.AudioPlayerInteractor
+import org.segn1s.playlistmaker.domain.api.player.AudioPlayerRepository
 
 class AudioPlayerInteractorImpl(
     private val repository: AudioPlayerRepository
@@ -76,5 +76,9 @@ class AudioPlayerInteractorImpl(
             AudioPlayerRepository.PlayerState.PLAYING -> AudioPlayerInteractor.PlayerState.PLAYING
             AudioPlayerRepository.PlayerState.PAUSED -> AudioPlayerInteractor.PlayerState.PAUSED
         }
+    }
+
+    override fun getCurrentPosition(): Long {
+        return repository.getCurrentPosition()
     }
 }

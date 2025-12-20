@@ -1,4 +1,4 @@
-package org.segn1s.playlistmaker.presentation
+package org.segn1s.playlistmaker.presentation.media
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

@@ -3,7 +3,7 @@ package org.segn1s.playlistmaker.presentation
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import org.segn1s.playlistmaker.Creator
-import org.segn1s.playlistmaker.domain.api.SettingsInteractor // Импортируем интерфейс Интерактора
+import org.segn1s.playlistmaker.domain.api.settings.SettingsInteractor // Импортируем интерфейс Интерактора
 
 class App : Application() {
 

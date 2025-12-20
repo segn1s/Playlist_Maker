@@ -1,4 +1,4 @@
-package org.segn1s.playlistmaker.domain.api
+package org.segn1s.playlistmaker.domain.api.settings
 
 interface SettingsRepository {
 
