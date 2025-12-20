@@ -6,12 +6,10 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import org.segn1s.playlistmaker.Creator
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.segn1s.playlistmaker.databinding.ActivitySearchBinding
 import org.segn1s.playlistmaker.domain.model.Track
-import org.segn1s.playlistmaker.presentation.search.SearchViewModel
 import org.segn1s.playlistmaker.presentation.common.TrackAdapter
 import org.segn1s.playlistmaker.presentation.player.PlayerActivity
 
@@ -19,7 +17,7 @@ class SearchActivity : AppCompatActivity() {
 
     // Весь UI теперь живет здесь
     private lateinit var binding: ActivitySearchBinding
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel: SearchViewModel by viewModel()
 
     private val trackAdapter = TrackAdapter()
     private val historyAdapter = TrackAdapter()
@@ -30,10 +28,6 @@ class SearchActivity : AppCompatActivity() {
         // Инициализация Binding
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        // Инициализация ViewModel
-        viewModel = ViewModelProvider(this, Creator.getSearchViewModelFactory(this))
-            .get(SearchViewModel::class.java)
 
         setupAdapters()
         setupListeners()
@@ -136,7 +130,7 @@ class SearchActivity : AppCompatActivity() {
                 binding.textError.visibility = View.VISIBLE
             }
 
-            is SearchState.Empty -> { /* Все скрыто */ }
+            is SearchState.Empty -> Unit
         }
     }
 
