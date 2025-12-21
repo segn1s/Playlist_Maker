@@ -23,6 +23,9 @@ import org.segn1s.playlistmaker.domain.impl.HistoryInteractorImpl
 import org.segn1s.playlistmaker.domain.impl.SearchTrackInteractorImpl
 import org.segn1s.playlistmaker.domain.impl.SettingsInteractorImpl
 import org.segn1s.playlistmaker.presentation.App
+import org.segn1s.playlistmaker.presentation.media.favs.FavoriteTracksViewModel
+import org.segn1s.playlistmaker.presentation.media.MediaViewModel
+import org.segn1s.playlistmaker.presentation.media.playlists.PlaylistsViewModel
 import org.segn1s.playlistmaker.presentation.player.PlayerViewModel
 import org.segn1s.playlistmaker.presentation.search.SearchViewModel
 import org.segn1s.playlistmaker.presentation.settings.SettingsViewModel
@@ -70,4 +73,7 @@ val viewModelModule = module {
     viewModel { SearchViewModel(get(), get()) }
     viewModel { PlayerViewModel(get()) }
     viewModel { SettingsViewModel(get()) }
+    viewModel { FavoriteTracksViewModel() }
+    viewModel { PlaylistsViewModel() }
+    viewModel { MediaViewModel() }
 }
