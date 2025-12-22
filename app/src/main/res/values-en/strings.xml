@@ -23,4 +23,10 @@
     <string name="genre">Genre</string>
     <string name="year">Year</string>
     <string name="country">Country</string>
+    <string name="favs">Favorite tracks</string>
+    <string name="playlists">Playlists</string>
+    <string name="playlists_empty">Your media library is empty</string>
+    <string name="not_created_yet">You haven\'t created any playlist yet</string>
+    <string name="new_playlist">New playlist</string>
+    <string name="media_library">Media library</string>
 </resources>
