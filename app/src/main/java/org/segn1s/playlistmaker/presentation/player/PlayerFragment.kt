@@ -1,40 +1,57 @@
-package org.segn1s.playlistmaker.presentation.player
+package org.segn1s.playlistmaker.ui.player
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import org.segn1s.playlistmaker.R
-import org.segn1s.playlistmaker.databinding.ActivityPlayerBinding
+import org.segn1s.playlistmaker.databinding.FragmentPlayerBinding
 import org.segn1s.playlistmaker.domain.model.Track
+import org.segn1s.playlistmaker.presentation.player.PlayerState
+import org.segn1s.playlistmaker.presentation.player.PlayerViewModel
 
-class PlayerActivity : AppCompatActivity() {
+class PlayerFragment : Fragment() {
 
-    private lateinit var binding: ActivityPlayerBinding
-    private val viewModel: PlayerViewModel by viewModel()
+    private var _binding: FragmentPlayerBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityPlayerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    // Получаем трек из аргументов навигации
+    private val track by lazy {
+        requireArguments().getSerializable(ARGS_TRACK) as Track
+    }
 
-        val track = intent.getSerializableExtra("track_extra") as? Track ?: run {
-            finish()
-            return
-        }
+    private val viewModel: PlayerViewModel by viewModel {
+        parametersOf(track)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentPlayerBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         bindTrackData(track)
         setupListeners()
         observeViewModel()
 
+        // Инициализация плеера, если это не делает ViewModel сама при старте
         viewModel.preparePlayer(track.previewUrl.orEmpty())
     }
 
     private fun observeViewModel() {
-        // Следим за состоянием плеера (иконка кнопки)
-        viewModel.playerState.observe(this) { state ->
+        viewModel.playerState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is PlayerState.Default -> {
                     binding.playPauseButton.isEnabled = false
@@ -47,18 +64,22 @@ class PlayerActivity : AppCompatActivity() {
                 }
                 is PlayerState.Playing -> {
                     binding.playPauseButton.setImageResource(R.drawable.ic_paused_media)
-                    binding.playbackProgress.text = state.progress // Берем прогресс из стейта!
+                    binding.playbackProgress.text = state.progress
                 }
                 is PlayerState.Paused -> {
                     binding.playPauseButton.setImageResource(R.drawable.ic_play_media)
-                    binding.playbackProgress.text = state.progress // Берем прогресс из стейта!
+                    binding.playbackProgress.text = state.progress
                 }
             }
         }
     }
 
     private fun setupListeners() {
-        binding.backButton.setOnClickListener { finish() }
+        // Навигация назад через NavController
+        binding.backButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
         binding.playPauseButton.setOnClickListener {
             viewModel.playbackControl()
         }
@@ -89,5 +110,20 @@ class PlayerActivity : AppCompatActivity() {
             )
             .placeholder(R.drawable.placeholder)
             .into(binding.albumCover)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    companion object {
+        private const val ARGS_TRACK = "track"
+
+        // Метод для удобного создания фрагмента (если не через NavGraph)
+        fun createArgs(track: Track): Bundle =
+            Bundle().apply {
+                putSerializable(ARGS_TRACK, track)
+            }
     }
 }

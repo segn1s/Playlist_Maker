@@ -1,68 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background"
     android:orientation="vertical"
-    android:background="@color/background">
+    android:paddingHorizontal="16dp">
 
-    <!-- Верхний бар -->
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/settingsTitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
+        android:fontFamily="@font/ys_display_medium"
+        android:paddingTop="24dp"
         android:paddingBottom="16dp"
-        android:paddingEnd="16dp">
-
-        <ImageView
-            android:id="@+id/backButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/arrow_left"
-            app:tint="@color/onBackground" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:paddingTop="10dp"
-            android:paddingStart="10dp"
-            android:fontFamily="@font/ys_display_medium"
-            android:text="@string/settings"
-            android:textColor="@color/onBackground"
-            android:textSize="25sp" />
-    </LinearLayout>
+        android:text="@string/settings"
+        android:textColor="@color/onBackground"
+        android:textSize="25sp" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp">
+        android:paddingVertical="8dp">
 
         <TextView
             style="@style/SettingsTextView"
-            android:layout_gravity="start"
+            android:layout_gravity="start|center_vertical"
             android:text="@string/dark_theme" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/themeSwitcher"
-            android:layout_gravity="start"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/default_icon_size"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="16dp"/>
-
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            app:thumbTint="@color/icon_tint"/>
     </FrameLayout>
 
     <FrameLayout
         android:id="@+id/shareAppContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp">
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingVertical="8dp">
 
         <TextView
             style="@style/SettingsTextView"
@@ -76,16 +56,15 @@
             android:layout_gravity="end"
             android:src="@drawable/sharing_icon"
             app:tint="@color/icon_tint" />
-
     </FrameLayout>
 
     <FrameLayout
         android:id="@+id/supportContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp">
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingVertical="8dp">
 
         <TextView
             style="@style/SettingsTextView"
@@ -96,20 +75,18 @@
             style="@style/SettingsIconView"
             android:layout_width="@dimen/default_icon_size"
             android:layout_height="@dimen/default_icon_size"
-            android:src="@drawable/support_icon"
-            app:tint="@color/icon_tint"
             android:layout_gravity="end"
-            android:padding="4dp"/>
-
+            android:src="@drawable/support_icon"
+            app:tint="@color/icon_tint" />
     </FrameLayout>
 
     <FrameLayout
         android:id="@+id/userAgreementContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp">
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingVertical="8dp">
 
         <TextView
             style="@style/SettingsTextView"
@@ -120,11 +97,9 @@
             style="@style/SettingsIconView"
             android:layout_width="@dimen/default_icon_size"
             android:layout_height="@dimen/default_icon_size"
-            android:src="@drawable/arrow_forward_icon"
-            app:tint="@color/icon_tint"
             android:layout_gravity="end"
-            android:padding="4dp"/>
-
+            android:src="@drawable/arrow_forward_icon"
+            app:tint="@color/icon_tint" />
     </FrameLayout>
 
 </LinearLayout>
