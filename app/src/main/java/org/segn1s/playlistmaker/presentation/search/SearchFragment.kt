@@ -1,56 +1,68 @@
 package org.segn1s.playlistmaker.presentation.search
 
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.segn1s.playlistmaker.databinding.ActivitySearchBinding
+import org.segn1s.playlistmaker.R
+import org.segn1s.playlistmaker.databinding.FragmentSearchBinding
 import org.segn1s.playlistmaker.domain.model.Track
 import org.segn1s.playlistmaker.presentation.common.TrackAdapter
-import org.segn1s.playlistmaker.presentation.player.PlayerActivity
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
 
-    // Весь UI теперь живет здесь
-    private lateinit var binding: ActivitySearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
+
     private val viewModel: SearchViewModel by viewModel()
 
     private val trackAdapter = TrackAdapter()
     private val historyAdapter = TrackAdapter()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private var textWatcher: TextWatcher? = null
 
-        // Инициализация Binding
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         setupAdapters()
         setupListeners()
 
-        // Подписка на состояние из ViewModel
-        viewModel.stateLiveData.observe(this) { state ->
+        // ВАЖНО: Используем viewLifecycleOwner для подписки во фрагментах
+        viewModel.stateLiveData.observe(viewLifecycleOwner) { state ->
             renderState(state)
         }
     }
 
     private fun setupAdapters() {
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        // Используем requireContext() вместо this
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = trackAdapter
 
-        binding.historyRecyclerView.layoutManager = LinearLayoutManager(this)
+        binding.historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.historyRecyclerView.adapter = historyAdapter
     }
 
     private fun setupListeners() {
-        binding.backButton.setOnClickListener { finish() }
-
         binding.clearButton.setOnClickListener {
             binding.searchEditText.text.clear()
+            hideKeyboard()
             viewModel.showHistory()
         }
 
@@ -62,19 +74,19 @@ class SearchActivity : AppCompatActivity() {
             viewModel.performSearch(binding.searchEditText.text.toString())
         }
 
-        // Адаптеры
+        // Клик по результатам поиска
         trackAdapter.setOnItemClickListener { track ->
             viewModel.addTrackToHistory(track)
-            startPlayerActivity(track)
+            openPlayer(track)
         }
 
+        // Клик по истории
         historyAdapter.setOnItemClickListener { track ->
             viewModel.addTrackToHistory(track)
-            startPlayerActivity(track)
+            openPlayer(track)
         }
 
-        // Работа с текстом
-        binding.searchEditText.addTextChangedListener(object : TextWatcher {
+        textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val query = s?.toString() ?: ""
@@ -87,11 +99,12 @@ class SearchActivity : AppCompatActivity() {
                 }
             }
             override fun afterTextChanged(s: Editable?) {}
-        })
+        }
+        binding.searchEditText.addTextChangedListener(textWatcher)
     }
 
     private fun renderState(state: SearchState) {
-        // Скрываем всё через binding
+        // Сначала скрываем всё, чтобы не было наложений
         with(binding) {
             recyclerView.visibility = View.GONE
             historyContainer.visibility = View.GONE
@@ -111,8 +124,12 @@ class SearchActivity : AppCompatActivity() {
             }
 
             is SearchState.History -> {
-                binding.historyContainer.visibility = View.VISIBLE
-                historyAdapter.updateData(state.tracks)
+                // Показываем историю, только если она не пустая
+                if (state.tracks.isNotEmpty()) {
+                    binding.historyContainer.visibility = View.VISIBLE
+                    historyAdapter.updateData(state.tracks)
+                }
+                // Если история пустая, всё останется GONE (пустой экран под поиском)
             }
 
             is SearchState.ErrorNetwork -> {
@@ -121,7 +138,6 @@ class SearchActivity : AppCompatActivity() {
                     textError.visibility = View.VISIBLE
                     textExplanationError.visibility = View.VISIBLE
                     buttonUpdate.visibility = View.VISIBLE
-                    // Здесь можно установить конкретные строки/картинки
                 }
             }
 
@@ -130,15 +146,28 @@ class SearchActivity : AppCompatActivity() {
                 binding.textError.visibility = View.VISIBLE
             }
 
-            is SearchState.Empty -> Unit
+            is SearchState.Empty -> {
+                // Ничего не делаем, всё уже скрыто. Это стартовое состояние.
+            }
         }
     }
 
-    private fun startPlayerActivity(track: Track) {
-        val intent = Intent(this, PlayerActivity::class.java).apply {
-            // Убедись, что ключ "track_extra" совпадает с тем, что в PlayerActivity
-            putExtra("track_extra", track)
-        }
-        startActivity(intent)
+    private fun openPlayer(track: Track) {
+        // Переход через Navigation Component
+        findNavController().navigate(
+            R.id.playerFragment,
+            bundleOf("track" to track)
+        )
+    }
+
+    private fun hideKeyboard() {
+        val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        inputMethodManager?.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.searchEditText.removeTextChangedListener(textWatcher)
+        _binding = null
     }
 }

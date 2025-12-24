@@ -17,23 +17,23 @@ class SearchViewModel(
     private val handler = Handler(Looper.getMainLooper())
     private var lastQuery: String? = null
 
-    // Состояние экрана
     private val _stateLiveData = MutableLiveData<SearchState>()
     val stateLiveData: LiveData<SearchState> = _stateLiveData
 
     private val searchRunnable = Runnable {
         val query = lastQuery
-        if (query != null && query.isNotEmpty()) {
+        if (!query.isNullOrEmpty()) {
             performSearch(query)
         }
     }
 
     init {
-        // При создании сразу показываем историю
         showHistory()
     }
 
     fun searchDebounce(changedText: String) {
+        // ИСПРАВЛЕНИЕ: Если текст пустой, мы не дебаунсим, а сразу показываем историю.
+        // lastQuery обновляем, чтобы логика не ломалась при быстром вводе.
         if (lastQuery == changedText) return
         this.lastQuery = changedText
 
@@ -42,17 +42,18 @@ class SearchViewModel(
     }
 
     fun performSearch(query: String) {
-
         if (query.isEmpty()) {
             showHistory()
             return
         }
 
+        // Обновляем lastQuery на случай, если поиск вызван кнопкой "Обновить"
+        lastQuery = query
+
         renderState(SearchState.Loading)
 
         searchInteractor.searchTracks(query, object : SearchTrackInteractor.TracksConsumer {
             override fun consume(foundTracks: List<Track>, isFailed: Boolean) {
-                // LiveData.postValue можно вызывать из любого потока (вместо runOnUiThread)
                 if (isFailed) {
                     renderState(SearchState.ErrorNetwork)
                 } else if (foundTracks.isEmpty()) {
@@ -65,6 +66,10 @@ class SearchViewModel(
     }
 
     fun showHistory() {
+        // ИСПРАВЛЕНИЕ: При переходе к истории сбрасываем lastQuery,
+        // чтобы следующий поиск (даже такой же) сработал корректно.
+        lastQuery = null
+
         val history = historyInteractor.getHistory()
         if (history.isNotEmpty()) {
             renderState(SearchState.History(history))

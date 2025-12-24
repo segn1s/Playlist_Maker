@@ -10,8 +10,6 @@
     android:paddingStart="@dimen/padding_search"
     android:paddingEnd="@dimen/padding_search">
 
-    <!-- Назад и Заголовок -->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,13 +17,6 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingBottom="8dp">
-
-        <ImageView
-            android:id="@+id/backButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/arrow_left"
-            app:tint="@color/ic_arrow_back_color" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -39,7 +30,6 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- Поле поиска -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,11 +38,8 @@
         android:orientation="horizontal"
         android:layout_marginTop="8dp"
         android:paddingHorizontal="12dp"
-        android:paddingVertical="8dp"
-        android:paddingStart="@dimen/padding_search"
-        android:paddingEnd="@dimen/padding_search">
+        android:paddingVertical="8dp">
 
-        <!-- Иконка поиска -->
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="20dp"
@@ -90,7 +77,6 @@
                 app:tint="@color/clear_button"
                 tools:visibility="visible" />
         </FrameLayout>
-
     </LinearLayout>
 
     <ProgressBar
@@ -149,7 +135,6 @@
         android:visibility="gone"
         app:cornerRadius="18dp" />
 
-    <!-- Скролл всего контейнера истории: заголовок + список + кнопка -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/historyContainer"
         android:layout_width="match_parent"
@@ -157,7 +142,7 @@
         android:layout_weight="1"
         android:layout_marginTop="32dp"
         android:fillViewport="true"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -195,7 +180,6 @@
                 android:textAllCaps="false"
                 app:cornerRadius="18dp" />
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
 
     <androidx.recyclerview.widget.RecyclerView
