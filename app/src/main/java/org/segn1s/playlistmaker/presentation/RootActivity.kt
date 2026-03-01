@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI // Добавляем этот импорт
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.segn1s.playlistmaker.R
 import org.segn1s.playlistmaker.databinding.ActivityRootBinding
 

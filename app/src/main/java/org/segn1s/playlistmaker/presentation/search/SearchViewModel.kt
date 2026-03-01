@@ -1,10 +1,15 @@
 package org.segn1s.playlistmaker.presentation.search
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 import org.segn1s.playlistmaker.domain.api.search.HistoryInteractor
 import org.segn1s.playlistmaker.domain.api.search.SearchTrackInteractor
 import org.segn1s.playlistmaker.domain.model.Track
@@ -14,31 +19,30 @@ class SearchViewModel(
     private val historyInteractor: HistoryInteractor
 ) : ViewModel() {
 
-    private val handler = Handler(Looper.getMainLooper())
-    private var lastQuery: String? = null
-
     private val _stateLiveData = MutableLiveData<SearchState>()
     val stateLiveData: LiveData<SearchState> = _stateLiveData
 
-    private val searchRunnable = Runnable {
-        val query = lastQuery
-        if (!query.isNullOrEmpty()) {
-            performSearch(query)
-        }
-    }
+    private val searchQueryFlow = MutableStateFlow("")
 
     init {
         showHistory()
+
+        viewModelScope.launch {
+            searchQueryFlow
+                .debounce(SEARCH_DEBOUNCE_DELAY_MILLIS)
+                .distinctUntilChanged()
+                .collectLatest { query ->
+                    if (query.isEmpty()) {
+                        showHistory()
+                    } else {
+                        performSearch(query)
+                    }
+                }
+        }
     }
 
     fun searchDebounce(changedText: String) {
-        // ИСПРАВЛЕНИЕ: Если текст пустой, мы не дебаунсим, а сразу показываем историю.
-        // lastQuery обновляем, чтобы логика не ломалась при быстром вводе.
-        if (lastQuery == changedText) return
-        this.lastQuery = changedText
-
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY_MILLIS)
+        searchQueryFlow.value = changedText
     }
 
     fun performSearch(query: String) {
@@ -47,29 +51,27 @@ class SearchViewModel(
             return
         }
 
-        // Обновляем lastQuery на случай, если поиск вызван кнопкой "Обновить"
-        lastQuery = query
-
         renderState(SearchState.Loading)
 
-        searchInteractor.searchTracks(query, object : SearchTrackInteractor.TracksConsumer {
-            override fun consume(foundTracks: List<Track>, isFailed: Boolean) {
-                if (isFailed) {
-                    renderState(SearchState.ErrorNetwork)
-                } else if (foundTracks.isEmpty()) {
-                    renderState(SearchState.ErrorNotFound)
-                } else {
-                    renderState(SearchState.Content(foundTracks))
+        viewModelScope.launch {
+            searchInteractor.searchTracks(query).collect { result ->
+                when (result) {
+                    is SearchTrackInteractor.SearchResult.Success -> {
+                        if (result.tracks.isEmpty()) {
+                            renderState(SearchState.ErrorNotFound)
+                        } else {
+                            renderState(SearchState.Content(result.tracks))
+                        }
+                    }
+                    is SearchTrackInteractor.SearchResult.Error -> {
+                        renderState(SearchState.ErrorNetwork)
+                    }
                 }
             }
-        })
+        }
     }
 
     fun showHistory() {
-        // ИСПРАВЛЕНИЕ: При переходе к истории сбрасываем lastQuery,
-        // чтобы следующий поиск (даже такой же) сработал корректно.
-        lastQuery = null
-
         val history = historyInteractor.getHistory()
         if (history.isNotEmpty()) {
             renderState(SearchState.History(history))
@@ -89,10 +91,6 @@ class SearchViewModel(
 
     private fun renderState(state: SearchState) {
         _stateLiveData.postValue(state)
-    }
-
-    override fun onCleared() {
-        handler.removeCallbacks(searchRunnable)
     }
 
     companion object {

@@ -1,12 +1,14 @@
 package org.segn1s.playlistmaker.presentation.player
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import org.segn1s.playlistmaker.domain.api.player.AudioPlayerInteractor
-import org.segn1s.playlistmaker.domain.api.player.AudioPlayerRepository
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -14,19 +16,10 @@ class PlayerViewModel(
     private val playerInteractor: AudioPlayerInteractor
 ) : ViewModel() {
 
-    private val handler = Handler(Looper.getMainLooper())
+    private var progressJob: Job? = null
 
-    // Теперь это ЕДИНСТВЕННЫЙ источник истины для Activity
     private val _playerState = MutableLiveData<PlayerState>(PlayerState.Default)
     val playerState: LiveData<PlayerState> = _playerState
-
-    private val updateProgressRunnable = object : Runnable {
-        override fun run() {
-            // Каждые 300мс создаем НОВОЕ состояние Playing с обновленным временем
-            _playerState.postValue(PlayerState.Playing(formatMilliseconds(playerInteractor.getCurrentPosition())))
-            handler.postDelayed(this, REFRESH_LISTENER_DELAY_MS)
-        }
-    }
 
     init {
         playerInteractor.setPlayerListener(
@@ -34,7 +27,7 @@ class PlayerViewModel(
                 _playerState.postValue(PlayerState.Prepared)
             },
             onCompletion = {
-                stopTimer()
+                stopProgress()
                 _playerState.postValue(PlayerState.Prepared)
             },
             onProgressUpdate = {}
@@ -48,36 +41,51 @@ class PlayerViewModel(
     fun playbackControl() {
         when (playerInteractor.getPlayerState()) {
             AudioPlayerInteractor.PlayerState.PLAYING -> pausePlayer()
-            AudioPlayerInteractor.PlayerState.PREPARED, AudioPlayerInteractor.PlayerState.PAUSED -> startPlayer()
+            AudioPlayerInteractor.PlayerState.PREPARED,
+            AudioPlayerInteractor.PlayerState.PAUSED -> startPlayer()
             else -> Unit
         }
     }
 
     private fun startPlayer() {
         playerInteractor.startPlayer()
-        startTimer()
-        // Состояние обновится через Runnable почти мгновенно
+        startProgress()
     }
 
     fun pausePlayer() {
         playerInteractor.pausePlayer()
-        stopTimer()
-        // При паузе фиксируем текущее время в состоянии Paused
-        _playerState.postValue(PlayerState.Paused(formatMilliseconds(playerInteractor.getCurrentPosition())))
+        stopProgress()
+        _playerState.postValue(
+            PlayerState.Paused(
+                formatMilliseconds(playerInteractor.getCurrentPosition())
+            )
+        )
     }
 
     override fun onCleared() {
         super.onCleared()
-        stopTimer()
+        stopProgress()
         playerInteractor.releasePlayer()
     }
 
-    private fun startTimer() {
-        handler.post(updateProgressRunnable)
+    private fun startProgress() {
+        if (progressJob?.isActive == true) return
+
+        progressJob = viewModelScope.launch {
+            while (isActive) {
+                _playerState.postValue(
+                    PlayerState.Playing(
+                        formatMilliseconds(playerInteractor.getCurrentPosition())
+                    )
+                )
+                delay(REFRESH_LISTENER_DELAY_MS)
+            }
+        }
     }
 
-    private fun stopTimer() {
-        handler.removeCallbacks(updateProgressRunnable)
+    private fun stopProgress() {
+        progressJob?.cancel()
+        progressJob = null
     }
 
     private fun formatMilliseconds(millis: Long): String {
@@ -86,6 +94,5 @@ class PlayerViewModel(
 
     companion object {
         private const val REFRESH_LISTENER_DELAY_MS = 300L
-        private const val DEFAULT_TIMER_VALUE = "00:00"
     }
 }
