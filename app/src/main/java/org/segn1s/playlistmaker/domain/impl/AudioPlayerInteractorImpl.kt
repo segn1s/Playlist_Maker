@@ -1,7 +1,5 @@
 package org.segn1s.playlistmaker.domain.impl
 
-import android.os.Handler
-import android.os.Looper
 import org.segn1s.playlistmaker.domain.api.player.AudioPlayerInteractor
 import org.segn1s.playlistmaker.domain.api.player.AudioPlayerRepository
 
@@ -9,20 +7,8 @@ class AudioPlayerInteractorImpl(
     private val repository: AudioPlayerRepository
 ) : AudioPlayerInteractor {
 
-    private var onProgressUpdate: ((Long) -> Unit)? = null
     private var onCompletion: (() -> Unit)? = null
     private var onPrepared: (() -> Unit)? = null
-
-    private val handler = Handler(Looper.getMainLooper())
-    private val updateTimeRunnable = object : Runnable {
-        override fun run() {
-            if (repository.getPlayerState() == AudioPlayerRepository.PlayerState.PLAYING) {
-                // Вызываем колбэк для обновления UI
-                onProgressUpdate?.invoke(repository.getCurrentPosition())
-                handler.postDelayed(this, 500L) // DELAY_MILLIS
-            }
-        }
-    }
 
     override fun setPlayerListener(
         onPrepared: () -> Unit,
@@ -31,7 +17,7 @@ class AudioPlayerInteractorImpl(
     ) {
         this.onPrepared = onPrepared
         this.onCompletion = onCompletion
-        this.onProgressUpdate = onProgressUpdate
+        // onProgressUpdate больше не используется, так как прогресс обновляется через корутину в ViewModel
     }
 
     override fun preparePlayer(url: String) {
@@ -39,7 +25,6 @@ class AudioPlayerInteractorImpl(
             url = url,
             onPrepared = { onPrepared?.invoke() },
             onCompletion = {
-                handler.removeCallbacks(updateTimeRunnable)
                 onCompletion?.invoke()
             }
         )
@@ -55,16 +40,13 @@ class AudioPlayerInteractorImpl(
 
     override fun startPlayer() {
         repository.start()
-        handler.post(updateTimeRunnable) // Запуск обновления времени
     }
 
     override fun pausePlayer() {
         repository.pause()
-        handler.removeCallbacks(updateTimeRunnable) // Остановка обновления времени
     }
 
     override fun releasePlayer() {
-        handler.removeCallbacks(updateTimeRunnable)
         repository.release()
     }
 

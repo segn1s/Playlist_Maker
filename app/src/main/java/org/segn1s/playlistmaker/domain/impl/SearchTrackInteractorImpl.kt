@@ -1,26 +1,24 @@
 package org.segn1s.playlistmaker.domain.impl
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import org.segn1s.playlistmaker.domain.api.search.SearchTrackInteractor
 import org.segn1s.playlistmaker.domain.api.search.TrackRepository
-import org.segn1s.playlistmaker.domain.model.Track
 
 class SearchTrackInteractorImpl(private val repository: TrackRepository) : SearchTrackInteractor {
 
-    override fun searchTracks(expression: String, consumer: SearchTrackInteractor.TracksConsumer) {
-
-        // Интерактор вызывает репозиторий и сам обрабатывает результат
-        repository.searchTracks(expression, object : TrackRepository.TrackConsumer {
-
-            override fun consume(foundTracks: List<Track>, errorCode: Int?) {
-                if (errorCode != null) {
-                    // Здесь может быть бизнес-логика обработки кодов ошибок (например,
-                    // если ошибка -404, возвращаем пустой список, но флаг isFailed = true)
-                    consumer.consume(emptyList(), true) // Передаем ошибку в Presentation
-                } else {
+    override fun searchTracks(expression: String): Flow<SearchTrackInteractor.SearchResult> {
+        return repository.searchTracks(expression).map { repositoryResult ->
+            when (repositoryResult) {
+                is TrackRepository.SearchResult.Success -> {
                     // Если нужно отфильтровать или отсортировать результаты, это делается здесь
-                    consumer.consume(foundTracks, false) // Передаем успешный результат
+                    SearchTrackInteractor.SearchResult.Success(repositoryResult.tracks)
+                }
+                is TrackRepository.SearchResult.Error -> {
+                    // Здесь может быть бизнес-логика обработки кодов ошибок
+                    SearchTrackInteractor.SearchResult.Error(true)
                 }
             }
-        })
+        }
     }
 }

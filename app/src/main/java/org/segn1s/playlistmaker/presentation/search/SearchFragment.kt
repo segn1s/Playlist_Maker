@@ -10,8 +10,12 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.segn1s.playlistmaker.R
 import org.segn1s.playlistmaker.databinding.FragmentSearchBinding
@@ -30,6 +34,9 @@ class SearchFragment : Fragment() {
 
     private var textWatcher: TextWatcher? = null
 
+    // Flow для debounce кликов
+    private val clickFlow = MutableSharedFlow<Track>(extraBufferCapacity = 1)
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,14 +51,22 @@ class SearchFragment : Fragment() {
         setupAdapters()
         setupListeners()
 
-        // ВАЖНО: Используем viewLifecycleOwner для подписки во фрагментах
         viewModel.stateLiveData.observe(viewLifecycleOwner) { state ->
             renderState(state)
+        }
+
+        // debounce кликов по элементам списка
+        viewLifecycleOwner.lifecycleScope.launch {
+            clickFlow
+                .debounce(300)
+                .collect { track ->
+                    viewModel.addTrackToHistory(track)
+                    openPlayer(track)
+                }
         }
     }
 
     private fun setupAdapters() {
-        // Используем requireContext() вместо this
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = trackAdapter
 
@@ -76,18 +91,17 @@ class SearchFragment : Fragment() {
 
         // Клик по результатам поиска
         trackAdapter.setOnItemClickListener { track ->
-            viewModel.addTrackToHistory(track)
-            openPlayer(track)
+            clickFlow.tryEmit(track)
         }
 
         // Клик по истории
         historyAdapter.setOnItemClickListener { track ->
-            viewModel.addTrackToHistory(track)
-            openPlayer(track)
+            clickFlow.tryEmit(track)
         }
 
         textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val query = s?.toString() ?: ""
                 binding.clearButton.visibility = if (query.isEmpty()) View.GONE else View.VISIBLE
@@ -98,13 +112,14 @@ class SearchFragment : Fragment() {
                     viewModel.searchDebounce(query)
                 }
             }
+
             override fun afterTextChanged(s: Editable?) {}
         }
+
         binding.searchEditText.addTextChangedListener(textWatcher)
     }
 
     private fun renderState(state: SearchState) {
-        // Сначала скрываем всё, чтобы не было наложений
         with(binding) {
             recyclerView.visibility = View.GONE
             historyContainer.visibility = View.GONE
@@ -124,12 +139,10 @@ class SearchFragment : Fragment() {
             }
 
             is SearchState.History -> {
-                // Показываем историю, только если она не пустая
                 if (state.tracks.isNotEmpty()) {
                     binding.historyContainer.visibility = View.VISIBLE
                     historyAdapter.updateData(state.tracks)
                 }
-                // Если история пустая, всё останется GONE (пустой экран под поиском)
             }
 
             is SearchState.ErrorNetwork -> {
@@ -146,14 +159,11 @@ class SearchFragment : Fragment() {
                 binding.textError.visibility = View.VISIBLE
             }
 
-            is SearchState.Empty -> {
-                // Ничего не делаем, всё уже скрыто. Это стартовое состояние.
-            }
+            is SearchState.Empty -> Unit
         }
     }
 
     private fun openPlayer(track: Track) {
-        // Переход через Navigation Component
         findNavController().navigate(
             R.id.playerFragment,
             bundleOf("track" to track)
@@ -161,7 +171,8 @@ class SearchFragment : Fragment() {
     }
 
     private fun hideKeyboard() {
-        val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        val inputMethodManager =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         inputMethodManager?.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
     }
 

@@ -1,14 +1,14 @@
 package org.segn1s.playlistmaker.domain.api.search
 
+import kotlinx.coroutines.flow.Flow
 import org.segn1s.playlistmaker.domain.model.Track
 
 interface SearchTrackInteractor {
-
-    // Интерфейс для обратного вызова. В отличие от Repository Consumer,
-    // здесь мы можем возвращать "красивые" статусы или enum-ы
-    interface TracksConsumer {
-        fun consume(foundTracks: List<Track>, isFailed: Boolean)
+    // Результат поиска треков
+    sealed class SearchResult {
+        data class Success(val tracks: List<Track>) : SearchResult()
+        data class Error(val isFailed: Boolean) : SearchResult()
     }
 
-    fun searchTracks(expression: String, consumer: TracksConsumer)
+    fun searchTracks(expression: String): Flow<SearchResult>
 }
