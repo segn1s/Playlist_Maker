@@ -1,15 +1,20 @@
 package org.segn1s.playlistmaker.di
 
 import android.content.Context
+import androidx.room.Room
 import com.google.gson.Gson
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import org.segn1s.playlistmaker.data.ITunesApi
+import org.segn1s.playlistmaker.data.db.AppDatabase
 import org.segn1s.playlistmaker.data.repository.AudioPlayerRepositoryImpl
+import org.segn1s.playlistmaker.data.repository.FavoriteTracksRepositoryImpl
 import org.segn1s.playlistmaker.data.repository.SearchHistoryRepositoryImpl
 import org.segn1s.playlistmaker.data.repository.SettingsRepositoryImpl
 import org.segn1s.playlistmaker.data.repository.TrackRepositoryImpl
+import org.segn1s.playlistmaker.domain.api.favorites.FavoriteTracksInteractor
+import org.segn1s.playlistmaker.domain.api.favorites.FavoriteTracksRepository
 import org.segn1s.playlistmaker.domain.api.player.AudioPlayerInteractor
 import org.segn1s.playlistmaker.domain.api.player.AudioPlayerRepository
 import org.segn1s.playlistmaker.domain.api.search.HistoryInteractor
@@ -19,6 +24,7 @@ import org.segn1s.playlistmaker.domain.api.search.TrackRepository
 import org.segn1s.playlistmaker.domain.api.settings.SettingsInteractor
 import org.segn1s.playlistmaker.domain.api.settings.SettingsRepository
 import org.segn1s.playlistmaker.domain.impl.AudioPlayerInteractorImpl
+import org.segn1s.playlistmaker.domain.impl.FavoriteTracksInteractorImpl
 import org.segn1s.playlistmaker.domain.impl.HistoryInteractorImpl
 import org.segn1s.playlistmaker.domain.impl.SearchTrackInteractorImpl
 import org.segn1s.playlistmaker.domain.impl.SettingsInteractorImpl
@@ -48,19 +54,33 @@ val dataModule = module {
     }
 
     factory { Gson() }
+
+    // Room database
+    single {
+        Room.databaseBuilder(
+            androidContext(),
+            AppDatabase::class.java,
+            "playlist_maker_db"
+        ).build()
+    }
+
+    single { get<AppDatabase>().favoriteTrackDao() }
 }
 
 val repositoryModule = module {
-    single<TrackRepository> { TrackRepositoryImpl(get()) }
+    single<TrackRepository> { TrackRepositoryImpl(get(), get()) }
     single<SearchHistoryRepository> { SearchHistoryRepositoryImpl(get(), get()) }
     single<SettingsRepository> { SettingsRepositoryImpl(get()) }
     factory<AudioPlayerRepository> { AudioPlayerRepositoryImpl() }
+
+    single<FavoriteTracksRepository> { FavoriteTracksRepositoryImpl(get()) }
 }
 
 val interactorModule = module {
     factory<SearchTrackInteractor> { SearchTrackInteractorImpl(get()) }
-    factory<HistoryInteractor> { HistoryInteractorImpl(get()) }
+    factory<HistoryInteractor> { HistoryInteractorImpl(get(), get()) }
     factory<AudioPlayerInteractor> { AudioPlayerInteractorImpl(get()) }
+    factory<FavoriteTracksInteractor> { FavoriteTracksInteractorImpl(get()) }
 
     // Для SettingsInteractorImpl нужен колбэк applyTheme из App
     factory<SettingsInteractor> {
@@ -71,9 +91,11 @@ val interactorModule = module {
 
 val viewModelModule = module {
     viewModel { SearchViewModel(get(), get()) }
-    viewModel { PlayerViewModel(get()) }
+    viewModel { (track: org.segn1s.playlistmaker.domain.model.Track) ->
+        PlayerViewModel(track, get(), get())
+    }
     viewModel { SettingsViewModel(get()) }
-    viewModel { FavoriteTracksViewModel() }
+    viewModel { FavoriteTracksViewModel(get()) }
     viewModel { PlaylistsViewModel() }
     viewModel { MediaViewModel() }
 }

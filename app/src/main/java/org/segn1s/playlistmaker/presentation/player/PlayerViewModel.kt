@@ -8,18 +8,25 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import org.segn1s.playlistmaker.domain.api.favorites.FavoriteTracksInteractor
 import org.segn1s.playlistmaker.domain.api.player.AudioPlayerInteractor
+import org.segn1s.playlistmaker.domain.model.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerViewModel(
-    private val playerInteractor: AudioPlayerInteractor
+    private val track: Track,
+    private val playerInteractor: AudioPlayerInteractor,
+    private val favoriteTracksInteractor: FavoriteTracksInteractor
 ) : ViewModel() {
 
     private var progressJob: Job? = null
 
     private val _playerState = MutableLiveData<PlayerState>(PlayerState.Default)
     val playerState: LiveData<PlayerState> = _playerState
+
+    private val _isFavorite = MutableLiveData<Boolean>(track.isFavorite)
+    val isFavorite: LiveData<Boolean> = _isFavorite
 
     init {
         playerInteractor.setPlayerListener(
@@ -32,6 +39,18 @@ class PlayerViewModel(
             },
             onProgressUpdate = {}
         )
+    }
+
+    fun onFavoriteClicked() {
+        viewModelScope.launch {
+            if (!track.isFavorite) {
+                favoriteTracksInteractor.addToFavorites(track)
+            } else {
+                favoriteTracksInteractor.removeFromFavorites(track)
+            }
+            track.isFavorite = !track.isFavorite
+            _isFavorite.postValue(track.isFavorite)
+        }
     }
 
     fun preparePlayer(url: String) {
