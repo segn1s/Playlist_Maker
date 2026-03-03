@@ -1,11 +1,12 @@
 package org.segn1s.playlistmaker.presentation.search
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -13,7 +14,9 @@ import kotlinx.coroutines.launch
 import org.segn1s.playlistmaker.domain.api.search.HistoryInteractor
 import org.segn1s.playlistmaker.domain.api.search.SearchTrackInteractor
 import org.segn1s.playlistmaker.domain.model.Track
+import org.segn1s.playlistmaker.presentation.search.SearchState.*
 
+@OptIn(FlowPreview::class)
 class SearchViewModel(
     private val searchInteractor: SearchTrackInteractor,
     private val historyInteractor: HistoryInteractor
@@ -32,43 +35,54 @@ class SearchViewModel(
                 .debounce(SEARCH_DEBOUNCE_DELAY_MILLIS)
                 .distinctUntilChanged()
                 .collectLatest { query ->
-                    if (query.isEmpty()) {
+
+                    if (query.isBlank()) {
                         showHistory()
-                    } else {
-                        performSearch(query)
+                        return@collectLatest
                     }
-                }
-        }
-    }
 
-    fun searchDebounce(changedText: String) {
-        searchQueryFlow.value = changedText
-    }
+                    renderState(SearchState.Loading)
 
-    fun performSearch(query: String) {
-        if (query.isEmpty()) {
-            showHistory()
-            return
-        }
+                    searchInteractor
+                        .searchTracks(query)
+                        .collectLatest { result ->
+                            when (result) {
+                                is SearchTrackInteractor.SearchResult.Success -> {
+                                    if (result.tracks.isEmpty()) {
+                                        renderState(SearchState.ErrorNotFound)
+                                    } else {
+                                        renderState(Content(result.tracks))
+                                    }
+                                }
 
-        renderState(SearchState.Loading)
+                                is SearchTrackInteractor.SearchResult.Error -> {
+                                    // Логируем и показываем сообщение
+                                    Log.e("SEARCH", "Error code = ${result.errorCode}, message = ${result.message}")
+                                    renderState(SearchState.ErrorNetwork) // или можно создать SearchState.ErrorMessage(result.message)
+                                }
 
-        viewModelScope.launch {
-            searchInteractor.searchTracks(query).collect { result ->
-                when (result) {
-                    is SearchTrackInteractor.SearchResult.Success -> {
-                        if (result.tracks.isEmpty()) {
-                            renderState(SearchState.ErrorNotFound)
-                        } else {
-                            renderState(SearchState.Content(result.tracks))
+                                is SearchTrackInteractor.SearchResult.NetworkError -> {
+                                    Log.e("SEARCH", "Network error: ${result.exception}")
+                                    renderState(SearchState.ErrorNetwork)
+                                }
+
+                                is SearchTrackInteractor.SearchResult.UnknownError -> {
+                                    Log.e("SEARCH", "Unknown error: ${result.exception}")
+                                    renderState(SearchState.ErrorNetwork)
+                                }
+
+                                is SearchTrackInteractor.SearchResult.ServerError -> {
+                                    Log.e("SEARCH", "Unknown error: ${result}")
+                                    renderState(SearchState.ErrorNetwork)
+                                }
+                            }
                         }
-                    }
-                    is SearchTrackInteractor.SearchResult.Error -> {
-                        renderState(SearchState.ErrorNetwork)
-                    }
                 }
-            }
         }
+    }
+
+    fun searchDebounce(text: String) {
+        searchQueryFlow.value = text
     }
 
     fun showHistory() {

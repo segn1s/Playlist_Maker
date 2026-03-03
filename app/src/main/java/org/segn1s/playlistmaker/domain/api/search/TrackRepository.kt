@@ -7,7 +7,7 @@ interface TrackRepository {
     // Результат поиска треков
     sealed class SearchResult {
         data class Success(val tracks: List<Track>) : SearchResult()
-        data class Error(val errorCode: Int) : SearchResult()
+        data class Error(val errorCode: Int, val message: String?) : SearchResult()
     }
 
     // Метод для поиска треков возвращает Flow с результатом

@@ -34,11 +34,11 @@ class SearchFragment : Fragment() {
 
     private var textWatcher: TextWatcher? = null
 
-    // Flow для debounce кликов
     private val clickFlow = MutableSharedFlow<Track>(extraBufferCapacity = 1)
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
@@ -55,7 +55,6 @@ class SearchFragment : Fragment() {
             renderState(state)
         }
 
-        // debounce кликов по элементам списка
         viewLifecycleOwner.lifecycleScope.launch {
             clickFlow
                 .debounce(300)
@@ -75,6 +74,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun setupListeners() {
+
         binding.clearButton.setOnClickListener {
             binding.searchEditText.text.clear()
             hideKeyboard()
@@ -85,26 +85,39 @@ class SearchFragment : Fragment() {
             viewModel.clearHistory()
         }
 
+        // Кнопка "обновить"
         binding.buttonUpdate.setOnClickListener {
-            viewModel.performSearch(binding.searchEditText.text.toString())
+            val query = binding.searchEditText.text.toString()
+            viewModel.searchDebounce(query)
         }
 
-        // Клик по результатам поиска
         trackAdapter.setOnItemClickListener { track ->
             clickFlow.tryEmit(track)
         }
 
-        // Клик по истории
         historyAdapter.setOnItemClickListener { track ->
             clickFlow.tryEmit(track)
         }
 
         textWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val query = s?.toString() ?: ""
-                binding.clearButton.visibility = if (query.isEmpty()) View.GONE else View.VISIBLE
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) = Unit
+
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
+                val query = s?.toString().orEmpty()
+
+                binding.clearButton.visibility =
+                    if (query.isEmpty()) View.GONE else View.VISIBLE
 
                 if (query.isEmpty()) {
                     viewModel.showHistory()
@@ -113,7 +126,7 @@ class SearchFragment : Fragment() {
                 }
             }
 
-            override fun afterTextChanged(s: Editable?) {}
+            override fun afterTextChanged(s: Editable?) = Unit
         }
 
         binding.searchEditText.addTextChangedListener(textWatcher)
@@ -131,7 +144,9 @@ class SearchFragment : Fragment() {
         }
 
         when (state) {
-            is SearchState.Loading -> binding.progressBar.visibility = View.VISIBLE
+            is SearchState.Loading -> {
+                binding.progressBar.visibility = View.VISIBLE
+            }
 
             is SearchState.Content -> {
                 binding.recyclerView.visibility = View.VISIBLE
@@ -171,9 +186,9 @@ class SearchFragment : Fragment() {
     }
 
     private fun hideKeyboard() {
-        val inputMethodManager =
-            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-        inputMethodManager?.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
+        val imm =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
     }
 
     override fun onDestroyView() {
