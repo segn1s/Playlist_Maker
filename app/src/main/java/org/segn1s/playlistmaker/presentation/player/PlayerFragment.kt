@@ -72,6 +72,15 @@ class PlayerFragment : Fragment() {
                 }
             }
         }
+
+        viewModel.isFavorite.observe(viewLifecycleOwner) { isFavorite ->
+            val iconRes = if (isFavorite) {
+                R.drawable.ic_liked_media
+            } else {
+                R.drawable.ic_liked_border_media
+            }
+            binding.likeButton.setImageResource(iconRes)
+        }
     }
 
     private fun setupListeners() {
@@ -82,6 +91,10 @@ class PlayerFragment : Fragment() {
 
         binding.playPauseButton.setOnClickListener {
             viewModel.playbackControl()
+        }
+
+        binding.likeButton.setOnClickListener {
+            viewModel.onFavoriteClicked()
         }
     }
 

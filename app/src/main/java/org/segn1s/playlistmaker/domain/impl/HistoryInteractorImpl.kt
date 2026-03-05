@@ -1,11 +1,13 @@
 package org.segn1s.playlistmaker.domain.impl
 
+import org.segn1s.playlistmaker.data.db.FavoriteTrackDao
 import org.segn1s.playlistmaker.domain.api.search.HistoryInteractor
 import org.segn1s.playlistmaker.domain.api.search.SearchHistoryRepository
 import org.segn1s.playlistmaker.domain.model.Track
 
 class HistoryInteractorImpl(
-    private val repository: SearchHistoryRepository
+    private val repository: SearchHistoryRepository,
+    private val favoriteTrackDao: FavoriteTrackDao
 ) : HistoryInteractor {
 
     override fun addTrack(track: Track) {
@@ -13,9 +15,13 @@ class HistoryInteractorImpl(
     }
 
     override fun getHistory(): List<Track> {
-        // Здесь могла бы быть дополнительная логика (например, аудит или фильтрация),
-        // но пока просто делегируем вызов репозиторию.
-        return repository.getHistory()
+        val history = repository.getHistory()
+        val favoriteIds = runCatching { favoriteTrackDao.getAllFavoriteIds().toSet() }
+            .getOrDefault(emptySet())
+
+        return history.onEach { track ->
+            track.isFavorite = track.trackId in favoriteIds
+        }
     }
 
     override fun clearHistory() {
