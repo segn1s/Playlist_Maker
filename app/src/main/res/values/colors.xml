@@ -20,4 +20,5 @@
     <color name="progressBarColor">#3772e7</color>
     <color name="ic_create_playlist_button">#AEAFB4</color>
     <color name="backgroundPlaylistFragment">#3772e7</color>
+    <color name="backgroundPlaylistButton">#3772e7</color>
 </resources>

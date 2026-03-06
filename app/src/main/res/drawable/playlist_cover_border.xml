@@ -1,9 +1,11 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
+
     <stroke
         android:width="2dp"
-        android:color="#CCCCCC"
-        android:dashWidth="36dp"
-        android:dashGap="48dp"
-        android:background="@drawable/playlist_cover_background"/>
-    <corners android:radius="24dp"/>
+        android:color="@color/light_gray"
+        android:dashWidth="56dp"
+        android:dashGap="56dp"/>
+
+    <corners android:radius="4dp"/>
+
 </shape>

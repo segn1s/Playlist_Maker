@@ -29,6 +29,7 @@ import org.segn1s.playlistmaker.domain.api.settings.SettingsRepository
 import org.segn1s.playlistmaker.domain.impl.AudioPlayerInteractorImpl
 import org.segn1s.playlistmaker.domain.impl.FavoriteTracksInteractorImpl
 import org.segn1s.playlistmaker.domain.impl.HistoryInteractorImpl
+import org.segn1s.playlistmaker.domain.impl.PlaylistInteractorImpl
 import org.segn1s.playlistmaker.domain.impl.SearchTrackInteractorImpl
 import org.segn1s.playlistmaker.domain.impl.SettingsInteractorImpl
 import org.segn1s.playlistmaker.domain.model.Track
@@ -90,7 +91,7 @@ val repositoryModule = module {
 }
 
 val interactorModule = module {
-    factory { PlaylistInteractor(get()) }
+    factory<PlaylistInteractor> { PlaylistInteractorImpl(get()) }
     factory<SearchTrackInteractor> { SearchTrackInteractorImpl(get()) }
     factory<HistoryInteractor> { HistoryInteractorImpl(get(), get()) }
     factory<AudioPlayerInteractor> { AudioPlayerInteractorImpl(get()) }

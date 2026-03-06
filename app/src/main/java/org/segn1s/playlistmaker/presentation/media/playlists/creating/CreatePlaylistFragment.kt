@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -57,14 +58,10 @@ class CreatePlaylistFragment : Fragment() {
         return binding.root
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        selectedImageUri?.let { outState.putString(KEY_URI, it.toString()) }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.createButton.isEnabled = false
 
+        // Восстановление URI после сворачивания
         savedInstanceState?.getString(KEY_URI)?.let { uriString ->
             val uri = Uri.parse(uriString)
             selectedImageUri = uri
@@ -88,7 +85,7 @@ class CreatePlaylistFragment : Fragment() {
                 binding.createButton.isEnabled = enabled
                 binding.createButton.setBackgroundColor(
                     requireContext().getColor(
-                        if (enabled) R.color.backgroundPlaylistFragment
+                        if (enabled) R.color.backgroundPlaylistButton
                         else R.color.ic_create_playlist_button
                     )
                 )
@@ -105,7 +102,7 @@ class CreatePlaylistFragment : Fragment() {
             val name = binding.playlistName.text.toString()
             val description = binding.playlistDescription.text.toString()
             viewModel.createPlaylist(name, description, selectedImageUri)
-            Toast.makeText(requireContext(), "Плейлист $name создан", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.pl_created, binding.playlistName.text), Toast.LENGTH_SHORT).show()
             findNavController().popBackStack()
         }
 
@@ -115,12 +112,12 @@ class CreatePlaylistFragment : Fragment() {
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, backCallback)
-
         binding.backButton.setOnClickListener { handleBack() }
     }
 
-    companion object {
-        private const val KEY_URI = "selected_image_uri"
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        selectedImageUri?.let { outState.putString(KEY_URI, it.toString()) }
     }
 
     private fun hasUnsavedData(): Boolean {
@@ -131,12 +128,18 @@ class CreatePlaylistFragment : Fragment() {
 
     private fun handleBack() {
         if (hasUnsavedData()) {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Завершить создание плейлиста?")
-                .setMessage("Все несохраненные данные будут потеряны")
-                .setNegativeButton("Отмена") { dialog, _ -> dialog.dismiss() }
-                .setPositiveButton("Завершить") { _, _ -> findNavController().popBackStack() }
-                .show()
+            val dialog = MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.delete_playlist_confirm, binding.playlistName.text))
+                .setNegativeButton(getString(R.string.pl_no)) { d, _ -> d.dismiss() }
+                .setPositiveButton(getString(R.string.pl_yes)) { _, _ -> findNavController().popBackStack() }
+                .create()
+
+            dialog.show()
+
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                .setTextColor(requireContext().getColor(R.color.backgroundPlaylistButton))
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                .setTextColor(requireContext().getColor(R.color.backgroundPlaylistButton))
         } else {
             findNavController().popBackStack()
         }
@@ -145,5 +148,9 @@ class CreatePlaylistFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val KEY_URI = "selected_image_uri"
     }
 }

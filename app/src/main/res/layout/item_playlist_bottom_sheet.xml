@@ -26,19 +26,19 @@
             android:id="@+id/playlistName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/ys_display_medium"
-            android:textColor="@color/onBackground"
-            android:textSize="16sp"
+            android:ellipsize="end"
+            android:fontFamily="@font/ys_display"
             android:maxLines="1"
-            android:ellipsize="end"/>
+            android:textColor="@color/onBackground"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/playlistTracksCount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/ys_text"
+            android:fontFamily="@font/ys_display"
             android:textColor="@color/onBackground"
-            android:textSize="13sp"
-            android:layout_marginTop="2dp"/>
+            android:textSize="12sp"
+            android:layout_marginTop="1dp"/>
     </LinearLayout>
 </LinearLayout>
