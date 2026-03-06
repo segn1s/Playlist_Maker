@@ -129,7 +129,8 @@ class CreatePlaylistFragment : Fragment() {
     private fun handleBack() {
         if (hasUnsavedData()) {
             val dialog = MaterialAlertDialogBuilder(requireContext())
-                .setTitle(getString(R.string.delete_playlist_confirm, binding.playlistName.text))
+                .setTitle(getString(R.string.delete_playlist_confirm))
+                .setMessage(getString(R.string.delete_playlist_message))
                 .setNegativeButton(getString(R.string.pl_no)) { d, _ -> d.dismiss() }
                 .setPositiveButton(getString(R.string.pl_yes)) { _, _ -> findNavController().popBackStack() }
                 .create()

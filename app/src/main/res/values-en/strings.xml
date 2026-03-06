@@ -29,7 +29,8 @@
     <string name="not_created_yet">You haven\'t created any playlist yet</string>
     <string name="new_playlist">New playlist</string>
     <string name="media_library">Media library</string>
-    <string name="delete_playlist_confirm">Are you sure you want to delete «%s»?</string>
+    <string name="delete_playlist_confirm">Finish creating the playlist?</string>
+    <string name="delete_playlist_message">All unsaved data will be deleted</string>
     <string name="pl_name">Name*</string>
     <string name="pl_description">Description</string>
     <string name="pl_create">Create</string>
