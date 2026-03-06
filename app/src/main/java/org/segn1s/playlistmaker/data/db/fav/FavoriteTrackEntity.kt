@@ -1,4 +1,4 @@
-package org.segn1s.playlistmaker.data.db
+package org.segn1s.playlistmaker.data.db.fav
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

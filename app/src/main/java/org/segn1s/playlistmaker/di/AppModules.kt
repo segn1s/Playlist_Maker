@@ -10,6 +10,7 @@ import org.segn1s.playlistmaker.data.ITunesApi
 import org.segn1s.playlistmaker.data.db.AppDatabase
 import org.segn1s.playlistmaker.data.repository.AudioPlayerRepositoryImpl
 import org.segn1s.playlistmaker.data.repository.FavoriteTracksRepositoryImpl
+import org.segn1s.playlistmaker.data.repository.PlaylistRepositoryImpl
 import org.segn1s.playlistmaker.data.repository.SearchHistoryRepositoryImpl
 import org.segn1s.playlistmaker.data.repository.SettingsRepositoryImpl
 import org.segn1s.playlistmaker.data.repository.TrackRepositoryImpl
@@ -17,6 +18,8 @@ import org.segn1s.playlistmaker.domain.api.favorites.FavoriteTracksInteractor
 import org.segn1s.playlistmaker.domain.api.favorites.FavoriteTracksRepository
 import org.segn1s.playlistmaker.domain.api.player.AudioPlayerInteractor
 import org.segn1s.playlistmaker.domain.api.player.AudioPlayerRepository
+import org.segn1s.playlistmaker.domain.api.playlist.PlaylistInteractor
+import org.segn1s.playlistmaker.domain.api.playlist.PlaylistRepository
 import org.segn1s.playlistmaker.domain.api.search.HistoryInteractor
 import org.segn1s.playlistmaker.domain.api.search.SearchHistoryRepository
 import org.segn1s.playlistmaker.domain.api.search.SearchTrackInteractor
@@ -28,10 +31,13 @@ import org.segn1s.playlistmaker.domain.impl.FavoriteTracksInteractorImpl
 import org.segn1s.playlistmaker.domain.impl.HistoryInteractorImpl
 import org.segn1s.playlistmaker.domain.impl.SearchTrackInteractorImpl
 import org.segn1s.playlistmaker.domain.impl.SettingsInteractorImpl
+import org.segn1s.playlistmaker.domain.model.Track
 import org.segn1s.playlistmaker.presentation.App
 import org.segn1s.playlistmaker.presentation.media.favs.FavoriteTracksViewModel
 import org.segn1s.playlistmaker.presentation.media.MediaViewModel
 import org.segn1s.playlistmaker.presentation.media.playlists.PlaylistsViewModel
+import org.segn1s.playlistmaker.presentation.media.playlists.creating.AddToPlaylistViewModel
+import org.segn1s.playlistmaker.presentation.media.playlists.creating.CreatePlaylistViewModel
 import org.segn1s.playlistmaker.presentation.player.PlayerViewModel
 import org.segn1s.playlistmaker.presentation.search.SearchViewModel
 import org.segn1s.playlistmaker.presentation.settings.SettingsViewModel
@@ -61,13 +67,20 @@ val dataModule = module {
             androidContext(),
             AppDatabase::class.java,
             "playlist_maker_db"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 
+    single { get<AppDatabase>().playlistDao() }
+
     single { get<AppDatabase>().favoriteTrackDao() }
+
+    single { get<AppDatabase>().playlistTrackDao() }
 }
 
 val repositoryModule = module {
+    single<PlaylistRepository> {
+        PlaylistRepositoryImpl(get(), get(), androidContext())
+    }
     single<TrackRepository> { TrackRepositoryImpl(get(), get()) }
     single<SearchHistoryRepository> { SearchHistoryRepositoryImpl(get(), get()) }
     single<SettingsRepository> { SettingsRepositoryImpl(get()) }
@@ -77,6 +90,7 @@ val repositoryModule = module {
 }
 
 val interactorModule = module {
+    factory { PlaylistInteractor(get()) }
     factory<SearchTrackInteractor> { SearchTrackInteractorImpl(get()) }
     factory<HistoryInteractor> { HistoryInteractorImpl(get(), get()) }
     factory<AudioPlayerInteractor> { AudioPlayerInteractorImpl(get()) }
@@ -96,6 +110,8 @@ val viewModelModule = module {
     }
     viewModel { SettingsViewModel(get()) }
     viewModel { FavoriteTracksViewModel(get()) }
-    viewModel { PlaylistsViewModel() }
+    viewModel { PlaylistsViewModel(get()) }
+    viewModel { CreatePlaylistViewModel(get()) }
+    viewModel { (track: Track) -> AddToPlaylistViewModel(track, get()) }
     viewModel { MediaViewModel() }
 }

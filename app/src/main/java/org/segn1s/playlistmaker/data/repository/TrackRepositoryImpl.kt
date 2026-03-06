@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import org.segn1s.playlistmaker.data.ITunesApi
-import org.segn1s.playlistmaker.data.db.FavoriteTrackDao
+import org.segn1s.playlistmaker.data.db.fav.FavoriteTrackDao
 import org.segn1s.playlistmaker.data.dto.SearchResponse
 import org.segn1s.playlistmaker.data.dto.toDomainTrack
 import org.segn1s.playlistmaker.domain.api.search.TrackRepository

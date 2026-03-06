@@ -1,4 +1,4 @@
-package org.segn1s.playlistmaker.data.db
+package org.segn1s.playlistmaker.data.db.fav
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface FavoriteTrackDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun insert(track: FavoriteTrackEntity)
 
     @Delete
@@ -22,4 +22,3 @@ interface FavoriteTrackDao {
     @Query("SELECT trackId FROM favorite_tracks")
     fun getAllFavoriteIds(): List<Long>
 }
-

@@ -2,9 +2,9 @@ package org.segn1s.playlistmaker.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import org.segn1s.playlistmaker.data.db.FavoriteTrackDao
-import org.segn1s.playlistmaker.data.db.toDomainTrack
-import org.segn1s.playlistmaker.data.db.toFavoriteEntity
+import org.segn1s.playlistmaker.data.db.fav.FavoriteTrackDao
+import org.segn1s.playlistmaker.data.db.fav.toDomainTrack
+import org.segn1s.playlistmaker.data.db.fav.toFavoriteEntity
 import org.segn1s.playlistmaker.domain.api.favorites.FavoriteTracksRepository
 import org.segn1s.playlistmaker.domain.model.Track
 
