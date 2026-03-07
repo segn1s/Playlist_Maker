@@ -33,4 +33,12 @@
     <string name="not_created_yet">Вы не создали ни одного плейлиста</string>
     <string name="new_playlist">Новый плейлист</string>
     <string name="media_library">Медиатека</string>
+    <string name="delete_playlist_confirm">Завершить создание плейлиста?</string>
+    <string name="delete_playlist_message">Всё несохранённые данные будут потеряны</string>
+    <string name="pl_name">Название*</string>
+    <string name="pl_description">Описание</string>
+    <string name="pl_create">Создать</string>
+    <string name="pl_yes">Да</string>
+    <string name="pl_no">Нет</string>
+    <string name="pl_created">Плейлист %s создан</string>
 </resources>
