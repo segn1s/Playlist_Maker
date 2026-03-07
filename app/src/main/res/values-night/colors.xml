@@ -17,4 +17,5 @@
     <color name="clear_button">#1A1B22</color>
     <color name="ic_create_playlist_button">#ABABAB</color>
     <color name="backgroundPlaylistFragment">#ABABAB</color>
+    <color name="bottomSheetBackground">#1A1B22</color>
 </resources> 

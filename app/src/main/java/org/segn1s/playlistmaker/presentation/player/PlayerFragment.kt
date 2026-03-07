@@ -14,7 +14,7 @@ import org.koin.core.parameter.parametersOf
 import org.segn1s.playlistmaker.R
 import org.segn1s.playlistmaker.databinding.FragmentPlayerBinding
 import org.segn1s.playlistmaker.domain.model.Track
-import org.segn1s.playlistmaker.presentation.media.playlists.AddToPlaylistBottomSheet
+import org.segn1s.playlistmaker.presentation.media.playlists.creating.AddToPlaylistBottomSheet
 import org.segn1s.playlistmaker.presentation.player.PlayerState
 import org.segn1s.playlistmaker.presentation.player.PlayerViewModel
 

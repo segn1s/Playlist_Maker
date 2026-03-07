@@ -54,6 +54,30 @@ class PlaylistRepositoryImpl(
         return file.absolutePath
     }
 
+    override suspend fun getPlaylistById(id: Int): Playlist {
+        return dao.getPlaylistById(id).toDomain()
+    }
+
+    override suspend fun deletePlaylist(id: Int) {
+        dao.deletePlaylist(id)
+    }
+
+    override suspend fun getTracksByIds(ids: List<Int>): List<Track> {
+        if (ids.isEmpty()) return emptyList()
+        return trackDao.getTracksByIds(ids).map { it.toTrackDomain() }
+    }
+
+    override suspend fun deleteTrackFromPlaylist(trackId: Int) {
+        val allPlaylists = dao.getPlaylists()
+        val isInOtherPlaylists = allPlaylists.any { playlist ->
+            val ids = if (playlist.trackIds.isBlank()) emptyList()
+            else playlist.trackIds.split(",").map { it.trim().toInt() }
+            ids.contains(trackId)
+        }
+        if (!isInOtherPlaylists) {
+            trackDao.deleteTrack(trackId)
+        }
+    }
     private fun PlaylistEntity.toDomain() = Playlist(
         id = id,
         name = name,
@@ -77,7 +101,20 @@ class PlaylistRepositoryImpl(
         trackId = trackId.toInt(),
         trackName = trackName,
         artistName = artistName,
-        trackTime = trackTime ?: "",
+        trackTimeMillis = trackTimeMillis,
+        artworkUrl100 = artworkUrl100,
+        collectionName = collectionName,
+        releaseDate = releaseDate,
+        primaryGenreName = primaryGenreName,
+        country = country,
+        previewUrl = previewUrl
+    )
+
+    private fun PlaylistTrackEntity.toTrackDomain() = Track(
+        trackId = trackId.toLong(),
+        trackName = trackName,
+        artistName = artistName,
+        trackTimeMillis = trackTimeMillis,
         artworkUrl100 = artworkUrl100,
         collectionName = collectionName,
         releaseDate = releaseDate,
