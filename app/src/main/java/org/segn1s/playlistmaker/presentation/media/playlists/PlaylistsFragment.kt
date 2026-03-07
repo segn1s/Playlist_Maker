@@ -24,7 +24,14 @@ class PlaylistsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        adapter = PlaylistAdapter { /* открытие плейлиста — позже */ }
+        super.onViewCreated(view, savedInstanceState)
+
+        adapter = PlaylistAdapter { playlist ->
+            findNavController().navigate(
+                R.id.action_mediaFragment_to_playlistWithTracksFragment,
+                Bundle().apply { putInt("playlistId", playlist.id) }
+            )
+        }
 
         binding.playlistsRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.playlistsRecycler.adapter = adapter

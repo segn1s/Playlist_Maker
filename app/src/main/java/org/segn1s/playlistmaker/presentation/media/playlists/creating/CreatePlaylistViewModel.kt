@@ -7,11 +7,11 @@ import kotlinx.coroutines.launch
 import org.segn1s.playlistmaker.domain.api.playlist.PlaylistInteractor
 import org.segn1s.playlistmaker.domain.model.Playlist
 
-class CreatePlaylistViewModel(
-    private val interactor: PlaylistInteractor
+open class CreatePlaylistViewModel(
+    val interactor: PlaylistInteractor
 ) : ViewModel() {
 
-    fun createPlaylist(name: String, description: String?, coverUri: Uri?) {
+    open fun createPlaylist(name: String, description: String?, coverUri: Uri?) {
         viewModelScope.launch {
             val coverPath = coverUri?.let { interactor.saveCoverToPrivateStorage(it) }
             val playlist = Playlist(

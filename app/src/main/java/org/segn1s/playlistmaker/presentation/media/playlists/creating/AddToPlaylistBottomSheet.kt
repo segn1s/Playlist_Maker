@@ -1,4 +1,4 @@
-package org.segn1s.playlistmaker.presentation.media.playlists
+package org.segn1s.playlistmaker.presentation.media.playlists.creating
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,9 +13,6 @@ import org.koin.core.parameter.parametersOf
 import org.segn1s.playlistmaker.R
 import org.segn1s.playlistmaker.databinding.FragmentAddToPlaylistBottomSheetBinding
 import org.segn1s.playlistmaker.domain.model.Track
-import org.segn1s.playlistmaker.presentation.media.playlists.creating.AddToPlaylistResult
-import org.segn1s.playlistmaker.presentation.media.playlists.creating.AddToPlaylistViewModel
-import org.segn1s.playlistmaker.presentation.media.playlists.creating.BottomSheetPlaylistAdapter
 
 class AddToPlaylistBottomSheet : BottomSheetDialogFragment() {
 

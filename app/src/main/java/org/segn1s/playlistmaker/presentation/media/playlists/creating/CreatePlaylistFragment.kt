@@ -20,15 +20,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.segn1s.playlistmaker.R
 import org.segn1s.playlistmaker.databinding.FragmentCreatePlaylistBinding
 
-class CreatePlaylistFragment : Fragment() {
+open class CreatePlaylistFragment : Fragment() {
 
     private var _binding: FragmentCreatePlaylistBinding? = null
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
 
     private val viewModel: CreatePlaylistViewModel by viewModel()
 
-    private var selectedImageUri: Uri? = null
-    private var coverImageView: ImageView? = null
+    var selectedImageUri: Uri? = null
+    var coverImageView: ImageView? = null
 
     private val pickMedia =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -43,6 +43,8 @@ class CreatePlaylistFragment : Fragment() {
                         scaleType = ImageView.ScaleType.CENTER_CROP
                     }
                     binding.coverContainer.addView(coverImageView, 0)
+                    binding.coverContainer.clipToOutline = true
+                    binding.coverContainer.outlineProvider = android.view.ViewOutlineProvider.BACKGROUND
                 }
                 coverImageView?.setImageURI(uri)
                 binding.addIcon.visibility = View.GONE
@@ -61,7 +63,6 @@ class CreatePlaylistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.createButton.isEnabled = false
 
-        // Восстановление URI после сворачивания
         savedInstanceState?.getString(KEY_URI)?.let { uriString ->
             val uri = Uri.parse(uriString)
             selectedImageUri = uri
@@ -74,6 +75,8 @@ class CreatePlaylistFragment : Fragment() {
                     scaleType = ImageView.ScaleType.CENTER_CROP
                 }
                 binding.coverContainer.addView(coverImageView, 0)
+                binding.coverContainer.clipToOutline = true
+                binding.coverContainer.outlineProvider = android.view.ViewOutlineProvider.BACKGROUND
             }
             coverImageView?.setImageURI(uri)
             binding.addIcon.visibility = View.GONE

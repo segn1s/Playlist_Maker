@@ -41,4 +41,21 @@
     <string name="pl_yes">Да</string>
     <string name="pl_no">Нет</string>
     <string name="pl_created">Плейлист %s создан</string>
+    <string name="delete_playlist">Удалить плейлист</string>
+    <string name="delete_playlist_message2">Вы уверены, что хотите удалить этот плейлист?</string>
+    <string name="delete_playlist_cancel">Отмена</string>
+    <string name="delete_playlist_delete">Удалить</string>
+    <string name="theres_no_tracks">В этом плейлисте нет списка треков, которым можно поделиться</string>
+    <string name="delete_track">Хотите удалить трек?</string>
+    <string name="share">Поделиться</string>
+    <string name="edit_info">Редактировать информацию</string>
+    <string name="theres_no_tracks_in_playlist">В этом плейлисте нет треков</string>
+    <string name="save">Сохранить</string>
+    <string name="pl_saved">Плейлист %s сохранён</string>
+    <string name="track_count">треков</string>
+    <string name="track_count2_4">трека</string>
+    <string name="track_count1">трек</string>
+    <string name="min_count">минут</string>
+    <string name="min_count2_4">минуты</string>
+    <string name="min_count1">минута</string>
 </resources>

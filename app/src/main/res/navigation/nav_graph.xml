@@ -20,6 +20,10 @@
         <action
             android:id="@+id/action_mediaFragment_to_createPlaylistFragment"
             app:destination="@id/createPlaylistFragment" />
+
+        <action
+            android:id="@+id/action_mediaFragment_to_playlistWithTracksFragment"
+            app:destination="@id/playlistWithTracksFragment" />
     </fragment>
 
     <fragment
@@ -48,5 +52,42 @@
         android:name="org.segn1s.playlistmaker.presentation.media.playlists.creating.CreatePlaylistFragment"
         android:label="CreatePlaylistFragment"
         tools:layout="@layout/fragment_create_playlist" />
+
+    <fragment
+        android:id="@+id/playlistWithTracksFragment"
+        android:name="org.segn1s.playlistmaker.presentation.media.playlists.PlaylistWithTracksFragment"
+        android:label="PlaylistWithTracksFragment"
+        tools:layout="@layout/fragment_playlist_with_tracks">
+
+        <argument
+            android:name="playlistId"
+            app:argType="integer" />
+
+        <action
+            android:id="@+id/action_playlistWithTracksFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+
+        <action
+            android:id="@+id/action_playlistWithTracksFragment_to_createPlaylistFragment"
+            app:destination="@id/createPlaylistFragment" />
+        <action
+            android:id="@+id/action_playlistWithTracksFragment_to_editPlaylistFragment"
+            app:destination="@id/editPlaylistFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/editPlaylistFragment"
+        android:name="org.segn1s.playlistmaker.presentation.playlist_with_tracks.edit_playlist.EditPlaylistFragment"
+        android:label="EditPlaylistFragment"
+        tools:layout="@layout/fragment_create_playlist">
+
+        <argument
+            android:name="playlist"
+            app:argType="org.segn1s.playlistmaker.domain.model.Playlist"/>
+
+        <action
+            android:id="@+id/action_editPlaylistFragment_to_playlistWithTracksFragment"
+            app:destination="@id/playlistWithTracksFragment"/>
+    </fragment>
 
 </navigation>
