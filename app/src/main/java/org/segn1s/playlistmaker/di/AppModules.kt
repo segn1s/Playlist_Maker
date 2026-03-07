@@ -32,14 +32,17 @@ import org.segn1s.playlistmaker.domain.impl.HistoryInteractorImpl
 import org.segn1s.playlistmaker.domain.impl.PlaylistInteractorImpl
 import org.segn1s.playlistmaker.domain.impl.SearchTrackInteractorImpl
 import org.segn1s.playlistmaker.domain.impl.SettingsInteractorImpl
+import org.segn1s.playlistmaker.domain.model.Playlist
 import org.segn1s.playlistmaker.domain.model.Track
 import org.segn1s.playlistmaker.presentation.App
 import org.segn1s.playlistmaker.presentation.media.favs.FavoriteTracksViewModel
 import org.segn1s.playlistmaker.presentation.media.MediaViewModel
+import org.segn1s.playlistmaker.presentation.playlist_with_tracks.PlaylistWithTracksViewModel
 import org.segn1s.playlistmaker.presentation.media.playlists.PlaylistsViewModel
 import org.segn1s.playlistmaker.presentation.media.playlists.creating.AddToPlaylistViewModel
 import org.segn1s.playlistmaker.presentation.media.playlists.creating.CreatePlaylistViewModel
 import org.segn1s.playlistmaker.presentation.player.PlayerViewModel
+import org.segn1s.playlistmaker.presentation.playlist_with_tracks.edit_playlist.EditPlaylistViewModel
 import org.segn1s.playlistmaker.presentation.search.SearchViewModel
 import org.segn1s.playlistmaker.presentation.settings.SettingsViewModel
 import retrofit2.Retrofit
@@ -105,6 +108,8 @@ val interactorModule = module {
 }
 
 val viewModelModule = module {
+    viewModel { (playlist: Playlist) -> EditPlaylistViewModel(playlist, get()) }
+    viewModel { (playlistId: Int) -> PlaylistWithTracksViewModel(playlistId, get()) }
     viewModel { SearchViewModel(get(), get()) }
     viewModel { (track: org.segn1s.playlistmaker.domain.model.Track) ->
         PlayerViewModel(track, get(), get())

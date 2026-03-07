@@ -37,4 +37,21 @@
     <string name="pl_yes">Yes</string>
     <string name="pl_no">No</string>
     <string name="pl_created">Playlist %s has been created</string>
+    <string name="delete_playlist">Delete the playlist</string>
+    <string name="delete_playlist_message2">Are you sure that you want to delete the playlist?</string>
+    <string name="delete_playlist_cancel">Cancel</string>
+    <string name="delete_playlist_delete">Delete</string>
+    <string name="theres_no_tracks">In this playlist there\'s no a list of tracks that you can share with</string>
+    <string name="delete_track">Do you want to delete the track?</string>
+    <string name="share">Share</string>
+    <string name="edit_info">Edit the information</string>
+    <string name="theres_no_tracks_in_playlist">There\'s no any tracks in this playlist</string>
+    <string name="save">Save</string>
+    <string name="pl_saved">Playlist %s has been saved</string>
+    <string name="track_count">tracks</string>
+    <string name="track_count2_4">tracks</string>
+    <string name="track_count1">tracks</string>
+    <string name="min_count">minutes</string>
+    <string name="min_count2_4">minutes</string>
+    <string name="min_count1">minutes</string>
 </resources>

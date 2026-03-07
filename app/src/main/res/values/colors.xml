@@ -21,4 +21,7 @@
     <color name="ic_create_playlist_button">#AEAFB4</color>
     <color name="backgroundPlaylistFragment">#3772e7</color>
     <color name="backgroundPlaylistButton">#3772e7</color>
+    <color name="bottomSheetBackground">#FFFFFF</color>
+    <color name="coverBackground">#D0CFCF</color>
+    <color name="PlaylistCoverTint">#A0A0A0</color>
 </resources>
